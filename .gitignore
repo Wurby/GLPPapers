@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+target/
+*.class
+*.jar
+*.war
+!**/bin/*.jar
+!**/bin/c1541
+!**/bin/petcat
+
+CLAUDE.md
+.claude
+/witness/.claude
+
+
+# Build outputs
+/witness/dist/
+/scribe/target/
+
+# sensitive data
+/scribe/data-processing
+/witness/public/archive
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+
+# Test coverage
+coverage/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Java
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+hs_err_pid*
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
