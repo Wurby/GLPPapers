@@ -17,14 +17,6 @@ GPA/
 ├── witness/ (Frontend)    # React + Vite + Tailwind CSS frontend
 ├── scribe/ (Backend)      # Java Spring Boot backend
 │   ├── src/              # Java backend application
-│   └── data-processing/  # C64 disk extraction tools and data
-│       ├── bin/              # c1541 and petcat utilities
-│       ├── 1982-1992 Commodore Data/  # Original .d64 disk images
-│       ├── extracted_texts/           # Extracted and converted text files
-│       ├── VICE.app/                  # Commodore 64 emulator
-│       ├── x64sc.app/                 # Commodore 64 emulator
-│       ├── extract_all_d64.sh        # Batch extraction script
-│       └── test_single_disk.sh       # Single disk test script
 └── README.md
 ```
 
@@ -53,17 +45,7 @@ cd scribe
 
 ### Data Processing
 
-The data processing tools extract and convert text from Commodore 64 .d64 disk images.
-
-```bash
-cd scribe/data-processing
-
-# Extract all disks
-./extract_all_d64.sh
-
-# Test a single disk
-./test_single_disk.sh
-```
+The data processing tools extract and convert text from Commodore 64 .d64 disk images. You'll need to get your own copies of VICE for commodore emmulation, extraction, etc.
 
 ## Technology Stack
 
@@ -78,18 +60,10 @@ cd scribe/data-processing
 - Spring Boot
 - REST API
 
-### Data Processing Tools
+### Data Processing Tools (for handling .d64 files)
 - c1541 - Commodore disk image utility
 - petcat - PETSCII to ASCII converter
-- Bash scripts for automation
-
-## Archive Contents
-
-This project preserves content from three boxes of Commodore 64 disk images:
-
-- **Box 1 - KLP** (Karl L. Pearson - Glenn's son)
-- **Box 2 - KLP** (Karl L. Pearson - Glenn's son)
-- **Box 3 - GLP** (Glenn L. Pearson)
+- VICE
 
 ### Glenn L. Pearson's Archive (Box 3)
 
@@ -101,6 +75,8 @@ Glenn L. Pearson's disks contain:
 - **CES Course Materials** - Church Educational System teaching resources
 - **First Drafts of Books** - Manuscripts and works in progress
 - **Productivity Tools** - EasyScript word processor files and databases
+
+The contents of this box is not publicly available.
 
 ## License
 
