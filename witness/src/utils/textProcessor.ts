@@ -21,32 +21,35 @@ export interface ExtractedMetadata {
 /**
  * Remove EasyScript formatting header codes
  * These are lines that start with ';' or '*' containing formatting directives
+ * Preserves paragraph structure and blank lines
  */
 export function stripFormattingCodes(text: string): string {
   const lines = text.split('\n');
   const cleanedLines: string[] = [];
-  let headerEnded = false;
+  let inContent = false;
 
   for (const line of lines) {
     const trimmed = line.trim();
 
-    // Skip header lines that start with ; or *
-    if (!headerEnded && (trimmed.startsWith(';') || trimmed.startsWith('*'))) {
+    // Skip lines that are ONLY formatting codes (no text content)
+    if (trimmed.length > 0 && (
+        trimmed.startsWith(';') ||
+        trimmed.match(/^\*[a-z]{1,4}\d+:.*$/) ||  // *lm12:rm75, etc.
+        trimmed.match(/^\*\d+=.*$/) ||             // *0=14:1=20, etc.
+        trimmed.match(/^\*ft\d+:.*$/) ||           // *ft4:..., etc.
+        trimmed.match(/^\*vp\d+$/) ||              // *vp4
+        trimmed.match(/^\*nb".*"$/)                // *nb"filename"
+    )) {
       continue;
     }
 
-    // Once we hit a non-formatting line, we're past the header
-    if (
-      !headerEnded &&
-      trimmed.length > 0 &&
-      !trimmed.startsWith(';') &&
-      !trimmed.startsWith('*')
-    ) {
-      headerEnded = true;
+    // Once we hit real content, start including lines
+    if (!inContent && trimmed.length > 0) {
+      inContent = true;
     }
 
-    // Include all lines after header
-    if (headerEnded) {
+    if (inContent) {
+      // Preserve blank lines for paragraph structure
       cleanedLines.push(line);
     }
   }
@@ -92,17 +95,103 @@ export function wrapLongLines(text: string, maxLength: number = 80): string {
 }
 
 /**
+ * EasyScript formatting code mappings
+ * Based on Commodore 64 EasyScript word processor conventions
+ */
+const EASYSCRIPT_CODES: Record<string, { type: string; tag?: string; class?: string }> = {
+  // Text formatting
+  '04': { type: 'bold-start', tag: 'strong' },
+  '20': { type: 'bold-end', tag: 'strong' },
+  '18': { type: 'underline-start', tag: 'u' },
+  '146': { type: 'underline-end', tag: 'u' },
+  '046': { type: 'emphasis-start', tag: 'em' },
+  '147': { type: 'emphasis-end', tag: 'em' },
+  '43': { type: 'quote-start', class: 'font-semibold' },
+  '45': { type: 'quote-end', class: 'font-semibold' },
+
+  // Other codes (ignore for now)
+  '05': { type: 'color' },
+  '28': { type: 'color' },
+  '29': { type: 'color' },
+  '30': { type: 'color' },
+  '31': { type: 'color' },
+};
+
+/**
+ * Translate EasyScript formatting codes to HTML/React markup
+ * Preserves original formatting intent while making it web-readable
+ */
+export function translateEasyScriptFormatting(text: string): string {
+  const openTags: string[] = [];
+
+  // Find all 2-3 digit codes adjacent to letters
+  const codePattern = /(\d{2,3})(?=[A-Za-z])|(?<=[A-Za-z])(\d{2,3})/g;
+  const matches = [...text.matchAll(codePattern)];
+
+  // Build a new string with HTML tags
+  let processed = '';
+  let lastIndex = 0;
+
+  matches.forEach((match) => {
+    const code = match[0];
+    const index = match.index!;
+    const mapping = EASYSCRIPT_CODES[code];
+
+    // Add text before this code
+    processed += text.substring(lastIndex, index);
+
+    if (mapping && mapping.tag) {
+      if (mapping.type.endsWith('-start')) {
+        // Opening tag
+        if (mapping.class) {
+          processed += `<span class="${mapping.class}">`;
+          openTags.push('span');
+        } else {
+          processed += `<${mapping.tag}>`;
+          openTags.push(mapping.tag);
+        }
+      } else if (mapping.type.endsWith('-end')) {
+        // Closing tag
+        const tagToClose = openTags.pop();
+        if (tagToClose) {
+          processed += `</${tagToClose}>`;
+        }
+      }
+    } else if (!mapping) {
+      // Unknown code - just remove it
+      // (already not added to processed)
+    }
+
+    lastIndex = index + code.length;
+  });
+
+  // Add remaining text
+  processed += text.substring(lastIndex);
+
+  // Close any unclosed tags
+  while (openTags.length > 0) {
+    const tag = openTags.pop();
+    processed += `</${tag}>`;
+  }
+
+  return processed;
+}
+
+/**
  * Decode special character codes used for formatting
- * EasyScript used codes like `43` and `45` for bold/emphasis
- * Note: This is a placeholder - actual decoding may vary by document
+ * Now translates EasyScript codes to HTML instead of removing them
  */
 export function decodeSpecialCharacters(text: string): string {
-  // Replace common character codes
-  // These are approximations - actual codes may vary
   let decoded = text;
 
-  // Remove character codes that appear to be formatting markers
-  decoded = decoded.replace(/`\d+/g, ''); // Remove backtick-number codes
+  // Remove backtick-number codes (e.g., `43text`45)
+  decoded = decoded.replace(/`\d+/g, '');
+
+  // Translate EasyScript formatting codes to HTML
+  decoded = translateEasyScriptFormatting(decoded);
+
+  // Clean up any remaining control characters EXCEPT newlines
+  decoded = decoded.replace(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/g, '');
 
   return decoded;
 }
@@ -136,7 +225,12 @@ export function processText(
     processed = wrapLongLines(processed, maxLineLength);
   }
 
-  return processed;
+  // Normalize line breaks - ensure paragraphs are separated by double newlines
+  processed = processed
+    .replace(/\n{3,}/g, '\n\n')  // Replace 3+ newlines with 2
+    .replace(/\n\n/g, '\n\n');    // Keep double newlines as-is
+
+  return processed.trim();
 }
 
 /**

@@ -1,11 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import type {
   ArchiveManifest,
-  ArchiveFile,
-  FilesByYear,
-  FilesByType,
+  FlatDocument,
+  SearchCriteria,
 } from '../types/archive';
+import {
+  flattenDocuments,
+  filterDocuments,
+  calculateStats,
+  buildFolderTree,
+  getTopTags,
+  getDocumentTypeStats,
+} from '../utils/manifestUtils';
 
+/**
+ * Main hook for accessing archive data with computed values
+ */
 export const useArchive = () => {
   const [manifest, setManifest] = useState<ArchiveManifest | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,7 +40,42 @@ export const useArchive = () => {
     fetchManifest();
   }, []);
 
-  return { manifest, loading, error };
+  // Memoized computed values
+  const documents = useMemo(
+    () => (manifest ? flattenDocuments(manifest) : []),
+    [manifest]
+  );
+
+  const stats = useMemo(
+    () => (manifest ? calculateStats(manifest) : null),
+    [manifest]
+  );
+
+  const folderTree = useMemo(
+    () => (manifest ? buildFolderTree(manifest) : []),
+    [manifest]
+  );
+
+  const topTags = useMemo(
+    () => (manifest ? getTopTags(manifest, 20) : []),
+    [manifest]
+  );
+
+  const documentTypes = useMemo(
+    () => (manifest ? getDocumentTypeStats(manifest) : []),
+    [manifest]
+  );
+
+  return {
+    manifest,
+    documents,
+    stats,
+    folderTree,
+    topTags,
+    documentTypes,
+    loading,
+    error,
+  };
 };
 
 export const useArchiveFile = (filePath: string) => {
@@ -61,46 +106,73 @@ export const useArchiveFile = (filePath: string) => {
 };
 
 /**
- * Group files by year
+ * Hook for filtering documents based on criteria
  */
-export const groupFilesByYear = (files: ArchiveFile[]): FilesByYear => {
-  return files.reduce((acc, file) => {
-    if (file.year) {
-      if (!acc[file.year]) {
-        acc[file.year] = [];
-      }
-      acc[file.year].push(file);
-    }
-    return acc;
-  }, {} as FilesByYear);
+export const useFilteredDocuments = (
+  documents: FlatDocument[],
+  criteria: SearchCriteria
+) => {
+  return useMemo(
+    () => filterDocuments(documents, criteria),
+    [documents, criteria]
+  );
 };
 
 /**
- * Group files by content type
+ * Hook for finding a document by path
  */
-export const groupFilesByType = (files: ArchiveFile[]): FilesByType => {
-  return files.reduce(
-    (acc, file) => {
-      const type = file.content_type;
-      if (type === 'journal') {
-        acc.journals.push(file);
-      } else if (type === 'letter') {
-        acc.letters.push(file);
-      } else if (type === 'book') {
-        acc.books.push(file);
-      } else if (type === 'ces') {
-        acc.ces.push(file);
-      } else if (type === 'financial') {
-        acc.financial.push(file);
-      }
-      return acc;
-    },
-    {
-      journals: [],
-      letters: [],
-      books: [],
-      ces: [],
-      financial: [],
-    } as FilesByType
+export const useDocument = (documents: FlatDocument[], path: string | null) => {
+  return useMemo(
+    () => documents.find((doc) => doc.path === path) || null,
+    [documents, path]
+  );
+};
+
+/**
+ * Hook for getting documents by folder
+ */
+export const useFolderDocuments = (
+  documents: FlatDocument[],
+  folderPath: string | null
+) => {
+  return useMemo(() => {
+    if (!folderPath) return documents;
+    return documents.filter((doc) => doc.folderPath === folderPath);
+  }, [documents, folderPath]);
+};
+
+/**
+ * Hook for getting documents by tag
+ */
+export const useDocumentsByTag = (
+  documents: FlatDocument[],
+  tag: string | null
+) => {
+  return useMemo(() => {
+    if (!tag) return [];
+    return documents.filter((doc) => doc.tags.includes(tag));
+  }, [documents, tag]);
+};
+
+/**
+ * Hook for getting documents by year
+ */
+export const useDocumentsByYear = (
+  documents: FlatDocument[],
+  year: number | null
+) => {
+  return useMemo(() => {
+    if (!year) return [];
+    return documents.filter((doc) => doc.year === year);
+  }, [documents, year]);
+};
+
+/**
+ * Hook for getting documents with dates (for timeline)
+ */
+export const useDatedDocuments = (documents: FlatDocument[]) => {
+  return useMemo(
+    () => documents.filter((doc) => doc.date !== null),
+    [documents]
   );
 };

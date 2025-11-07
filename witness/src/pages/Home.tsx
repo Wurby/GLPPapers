@@ -2,15 +2,25 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useRandomLogo } from '../utils/logoUtils';
 import { useArchive } from '../hooks/useArchive';
 import { Card, Heading, Text } from '../components/ui';
+import { getTagColor } from '../utils/manifestUtils';
 
 function Home() {
   const currentLogo = useRandomLogo();
-  const { manifest } = useArchive();
+  const { stats, topTags } = useArchive();
 
-  const journalCount = manifest?.stats.by_type.journal || 0;
-  const letterCount = manifest?.stats.by_type.letter || 0;
-  const cesCount = manifest?.stats.by_type.ces || 0;
-  const totalFiles = manifest?.total_files || 0;
+  // Get counts for specific document types
+  const getTypeCount = (typePattern: string) => {
+    if (!stats) return 0;
+    return Object.entries(stats.documentTypes)
+      .filter(([type]) => type.toLowerCase().includes(typePattern))
+      .reduce((sum, [, count]) => sum + count, 0);
+  };
+
+  const journalCount = getTypeCount('journal');
+  const letterCount = getTypeCount('letter');
+  const cesCount = getTypeCount('ces');
+  const totalFiles = stats?.totalDocuments || 0;
+  const dateCoverage = stats?.dateRange.coverage_percentage || 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -41,7 +51,7 @@ function Home() {
           "I, GLENN L. PEARSON, BEING OF FAIRLY SOUND MIND AND REASONABLY GOOD
           CHARACTER..."
         </Text>
-        <Text size="sm" color="muted">
+        <Text size="sm" color="muted" className="w-full">
           — From his 1992 New Year's Resolutions
         </Text>
       </Card>
@@ -124,6 +134,83 @@ function Home() {
           </Text>
         </Card>
       </div>
+
+      {/* Archive Statistics */}
+      {stats && (
+        <Card variant="bordered" padding="md" className="mb-12">
+          <Heading as="h3" size="sm" className="mb-4 w-full">
+            Archive Statistics
+          </Heading>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div>
+              <div className="text-3xl font-bold text-primary-700">
+                {stats.totalDocuments.toLocaleString()}
+              </div>
+              <Text size="sm" color="muted">
+                Total Documents
+              </Text>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary-700">
+                {stats.totalFolders}
+              </div>
+              <Text size="sm" color="muted">
+                Collections
+              </Text>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary-700">
+                {dateCoverage.toFixed(2)}%
+              </div>
+              <Text size="sm" color="muted">
+                Dated Documents
+              </Text>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary-700">
+                {Object.keys(stats.documentTypes).length}
+              </div>
+              <Text size="sm" color="muted">
+                Document Types
+              </Text>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Tag Cloud */}
+      {topTags.length > 0 && (
+        <Card variant="bordered" padding="md" className="mb-12">
+          <Heading as="h3" size="sm" className="mb-4">
+            Explore by Topic
+          </Heading>
+          <Text size="sm" color="muted" className="mb-4">
+            Browse documents by subject matter and themes
+          </Text>
+          <div className="flex flex-wrap gap-2">
+            {topTags.slice(0, 30).map(({ tag, count }) => (
+              <RouterLink
+                key={tag}
+                to={`/browse?tag=${encodeURIComponent(tag)}`}
+                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium transition-all hover:scale-105 ${getTagColor(
+                  tag
+                )}`}
+              >
+                {tag}
+                <span className="ml-1.5 opacity-60">({count})</span>
+              </RouterLink>
+            ))}
+          </div>
+          <div className="mt-4">
+            <RouterLink
+              to="/browse"
+              className="text-primary-600 underline decoration-primary-300 hover:text-primary-700 hover:decoration-primary-500 text-sm font-medium"
+            >
+              View all documents →
+            </RouterLink>
+          </div>
+        </Card>
+      )}
 
       <Card variant="default" padding="lg" className="bg-primary-50">
         <Heading as="h2" size="md" className="mb-4">

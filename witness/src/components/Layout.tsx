@@ -1,6 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useRandomLogo } from '../utils/logoUtils';
-import { Button } from './ui';
 
 function Layout() {
   const currentLogo = useRandomLogo();
