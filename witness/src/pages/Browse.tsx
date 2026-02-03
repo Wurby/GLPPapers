@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useArchive } from '../hooks/useArchive';
 import { Card, Heading, Text, Input } from '../components/ui';
 import { getTagColor, formatDate } from '../utils/manifestUtils';
+import { DocumentPreview } from '../components/DocumentPreview';
 import type { FlatDocument } from '../types/archive';
 
 function Browse() {
@@ -162,36 +163,37 @@ function Browse() {
             {folderDocs
               .sort((a, b) => a.filename.localeCompare(b.filename))
               .map((doc) => (
-                <Link
-                  key={doc.path}
-                  to={`/viewer/${encodeURIComponent(doc.path)}`}
-                  className="block bg-white border border-gray-200 rounded-lg p-3 mb-2 hover:shadow-md hover:border-primary-300 transition-all"
-                >
-                  <div className="flex justify-between items-start gap-3">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-primary-700 mb-1 truncate">
-                        {doc.filename}
-                      </h4>
-                      <p className="text-xs text-gray-600 mb-1 line-clamp-2">
-                        {doc.summary}
-                      </p>
-                      <div className="flex flex-wrap gap-1 items-center">
-                        <span className="text-xs text-gray-500">{doc.type}</span>
-                        {doc.date && (
-                          <>
-                            <span className="text-xs text-gray-400">•</span>
-                            <span className="text-xs text-gray-500">
-                              {formatDate(doc.date)}
-                            </span>
-                          </>
-                        )}
+                <DocumentPreview key={doc.path} doc={doc} compact>
+                  <Link
+                    to={`/viewer/${encodeURIComponent(doc.path)}`}
+                    className="block bg-white border border-gray-200 rounded-lg p-3 mb-2 hover:shadow-md hover:border-primary-300 transition-all"
+                  >
+                    <div className="flex justify-between items-start gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-primary-700 mb-1 truncate">
+                          {doc.filename}
+                        </h4>
+                        <p className="text-xs text-gray-600 mb-1 line-clamp-2">
+                          {doc.summary}
+                        </p>
+                        <div className="flex flex-wrap gap-1 items-center">
+                          <span className="text-xs text-gray-500">{doc.type}</span>
+                          {doc.date && (
+                            <>
+                              <span className="text-xs text-gray-400">•</span>
+                              <span className="text-xs text-gray-500">
+                                {formatDate(doc.date)}
+                              </span>
+                            </>
+                          )}
+                        </div>
                       </div>
+                      <span className="text-primary-600 text-xs font-medium flex-shrink-0">
+                        View →
+                      </span>
                     </div>
-                    <span className="text-primary-600 text-xs font-medium flex-shrink-0">
-                      View →
-                    </span>
-                  </div>
-                </Link>
+                  </Link>
+                </DocumentPreview>
               ))}
           </div>
         )}
@@ -200,48 +202,49 @@ function Browse() {
   };
 
   const renderDocument = (doc: FlatDocument) => (
-    <Link
-      key={doc.path}
-      to={`/viewer/${encodeURIComponent(doc.path)}`}
-      className="block bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md hover:border-primary-300 transition-all"
-    >
-      <div className="flex justify-between items-start gap-4">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-primary-700 mb-2">{doc.filename}</h3>
-          <p className="text-sm text-gray-700 mb-2 line-clamp-3">{doc.summary}</p>
-          <div className="flex flex-wrap gap-2 items-center mb-2">
-            <span className="px-2 py-0.5 bg-primary-100 text-primary-800 text-xs rounded">
-              {doc.type}
-            </span>
-            {doc.date && (
-              <span className="text-xs text-gray-600">{formatDate(doc.date)}</span>
-            )}
-            <span className="text-xs text-gray-400">•</span>
-            <span className="text-xs text-gray-500 truncate">{doc.folderPath}</span>
-          </div>
-          {doc.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {doc.tags.slice(0, 5).map((tag) => (
-                <span
-                  key={tag}
-                  className={`px-2 py-0.5 text-xs rounded-full ${getTagColor(tag)}`}
-                >
-                  {tag}
-                </span>
-              ))}
-              {doc.tags.length > 5 && (
-                <span className="text-xs text-gray-500">
-                  +{doc.tags.length - 5} more
-                </span>
+    <DocumentPreview key={doc.path} doc={doc}>
+      <Link
+        to={`/viewer/${encodeURIComponent(doc.path)}`}
+        className="block bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md hover:border-primary-300 transition-all"
+      >
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-primary-700 mb-2">{doc.filename}</h3>
+            <p className="text-sm text-gray-700 mb-2 line-clamp-3">{doc.summary}</p>
+            <div className="flex flex-wrap gap-2 items-center mb-2">
+              <span className="px-2 py-0.5 bg-primary-100 text-primary-800 text-xs rounded">
+                {doc.type}
+              </span>
+              {doc.date && (
+                <span className="text-xs text-gray-600">{formatDate(doc.date)}</span>
               )}
+              <span className="text-xs text-gray-400">•</span>
+              <span className="text-xs text-gray-500 truncate">{doc.folderPath}</span>
             </div>
-          )}
+            {doc.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {doc.tags.slice(0, 5).map((tag) => (
+                  <span
+                    key={tag}
+                    className={`px-2 py-0.5 text-xs rounded-full ${getTagColor(tag)}`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {doc.tags.length > 5 && (
+                  <span className="text-xs text-gray-500">
+                    +{doc.tags.length - 5} more
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          <span className="text-primary-600 text-sm font-medium flex-shrink-0">
+            View →
+          </span>
         </div>
-        <span className="text-primary-600 text-sm font-medium flex-shrink-0">
-          View →
-        </span>
-      </div>
-    </Link>
+      </Link>
+    </DocumentPreview>
   );
 
   return (

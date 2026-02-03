@@ -1,30 +1,27 @@
 # The Glenn L. Pearson Papers
 
-A full-stack digital archive preserving the journals, letters, and writings of Glenn L. Pearson - religion professor, author of "Building Faith with the Book of Mormon," devoted Latter-day Saint, father, and grandfather.
+A digital archive preserving the journals, letters, and writings of Glenn L. Pearson - religion professor, author of "Building Faith with the Book of Mormon," devoted Latter-day Saint, father, and grandfather.
 
 This project digitally preserves content from Commodore 64 disk images (1982-1992), making accessible Glenn L. Pearson's extensive personal journals, correspondence, CES course materials, and book manuscripts.
 
 ## Project Names
 
-**Witness** (Frontend) - Reflects Glenn L. Pearson's role as a witness through his journals and writings, and honors his faith as one who bore witness to gospel truths.
-
-**Scribe** (Backend) - Honors his work as a writer, professor, and keeper of records. Like ancient scribes who preserved sacred texts, this application preserves and serves Glenn L. Pearson's legacy.
+**Witness** - Reflects Glenn L. Pearson's role as a witness through his journals and writings, and honors his faith as one who bore witness to gospel truths. This React application provides a web interface for exploring the archive.
 
 ## Project Structure
 
 ```
 GPA/
-├── witness/ (Frontend)    # React + Vite + Tailwind CSS frontend
-├── scribe/ (Backend)      # Java Spring Boot backend
-│   ├── src/              # Java backend application
+├── witness/               # React + Vite + Tailwind CSS web interface
+│   ├── src/              # React components, pages, hooks
+│   ├── public/archive/   # Archive manifest and document data
+│   └── package.json
 └── README.md
 ```
 
 ## Getting Started
 
-### Witness (Frontend)
-
-The frontend provides a web interface for exploring Glenn L. Pearson's archived writings.
+The archive is a static React application—no backend server required.
 
 ```bash
 cd witness
@@ -32,38 +29,22 @@ npm install
 npm run dev
 ```
 
-The frontend will be available at http://localhost:5173
+The application will be available at http://localhost:5173
 
-### Scribe (Backend)
-
-The backend API serves the archived content and metadata.
+For production builds:
 
 ```bash
-cd scribe
-# Java build instructions coming soon
+npm run build
+npm run preview
 ```
-
-### Data Processing
-
-The data processing tools extract and convert text from Commodore 64 .d64 disk images. You'll need to get your own copies of VICE for commodore emmulation, extraction, etc.
 
 ## Technology Stack
 
-### Witness (Frontend)
-- React 18
-- Vite 7
-- React Router 6
-- Tailwind CSS
-
-### Scribe (Backend)
-- Java
-- Spring Boot
-- REST API
-
-### Data Processing Tools (for handling .d64 files)
-- c1541 - Commodore disk image utility
-- petcat - PETSCII to ASCII converter
-- VICE
+- **React 19** - UI framework
+- **Vite 7** - Build tool
+- **React Router 7** - Client-side routing
+- **Tailwind CSS 4** - Styling
+- **TypeScript** - Type safety
 
 ### Glenn L. Pearson's Archive (Box 3)
 

@@ -1,38 +1,38 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { useArchive, useDatedDocuments } from '../hooks/useArchive';
+import { useArchive } from '../hooks/useArchive';
 import type { FlatDocument } from '../types/archive';
 import { Card, Heading, Text } from '../components/ui';
-import { formatDate } from '../utils/manifestUtils';
+import { DocumentPreviewLink } from '../components/DocumentPreview';
 
 function Timeline() {
   const { documents, loading, error } = useArchive();
-  const datedDocuments = useDatedDocuments(documents);
 
-  // Group documents by year
-  const documentsByYear = useMemo(() => {
+  // Separate dated and undated documents
+  const { documentsByYear, undatedDocuments, years } = useMemo(() => {
     const grouped: Record<number, FlatDocument[]> = {};
-    datedDocuments.forEach((doc) => {
+    const undated: FlatDocument[] = [];
+
+    documents.forEach((doc) => {
       if (doc.year) {
         if (!grouped[doc.year]) {
           grouped[doc.year] = [];
         }
         grouped[doc.year].push(doc);
+      } else {
+        undated.push(doc);
       }
     });
-    return grouped;
-  }, [datedDocuments]);
 
-  // Get all years and sort them
-  const years = useMemo(() => {
-    return Object.keys(documentsByYear)
+    const sortedYears = Object.keys(grouped)
       .map(Number)
       .sort((a, b) => b - a); // Most recent first
-  }, [documentsByYear]);
 
-  const getYearDocuments = (year: number): FlatDocument[] => {
-    return documentsByYear[year] || [];
-  };
+    return {
+      documentsByYear: grouped,
+      undatedDocuments: undated,
+      years: sortedYears,
+    };
+  }, [documents]);
 
   const getTypeCount = (docs: FlatDocument[], typePattern: string): number => {
     return docs.filter((d) => d.type.toLowerCase().includes(typePattern)).length;
@@ -43,13 +43,13 @@ function Timeline() {
       <Heading as="h1" size="xl" className="mb-4">
         Timeline
       </Heading>
-      <Text color="muted" className="mb-8">
+      <Text color="muted" className="mb-4">
         Explore Glenn L. Pearson's writings chronologically
       </Text>
       <Text size="sm" color="muted" className="mb-12">
-        Showing {datedDocuments.length} documents with extracted dates (
-        {((datedDocuments.length / documents.length) * 100).toFixed(0)}% of
-        archive)
+        Showing all {documents.length} documents •{' '}
+        {documents.length - undatedDocuments.length} with dates •{' '}
+        {undatedDocuments.length} undated
       </Text>
 
       {loading && (
@@ -72,10 +72,11 @@ function Timeline() {
         </Card>
       )}
 
-      {!loading && !error && years.length > 0 && (
+      {!loading && !error && (
         <div className="space-y-8">
+          {/* Dated documents grouped by year */}
           {years.map((year) => {
-            const yearDocs = getYearDocuments(year);
+            const yearDocs = documentsByYear[year] || [];
             const journalCount = getTypeCount(yearDocs, 'journal');
             const letterCount = getTypeCount(yearDocs, 'letter');
             const bookCount = getTypeCount(yearDocs, 'book');
@@ -119,30 +120,51 @@ function Timeline() {
                 </div>
 
                 {/* Document grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2">
                   {yearDocs.map((doc) => (
-                    <Link
+                    <DocumentPreviewLink
                       key={doc.path}
-                      to={`/viewer/${encodeURIComponent(doc.path)}`}
-                      className="block bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md hover:border-primary-300 transition-all"
+                      doc={doc}
+                      className="block bg-white border border-gray-200 rounded px-2 py-1.5 hover:shadow-md hover:border-primary-300 transition-all"
                     >
-                      <div className="text-sm font-medium text-primary-700 mb-1 truncate" title={doc.filename}>
+                      <div className="text-xs font-medium text-primary-700 truncate" title={doc.filename}>
                         {doc.filename}
                       </div>
-                      {doc.date && (
-                        <div className="text-xs text-gray-500 mb-1">
-                          {formatDate(doc.date)}
-                        </div>
-                      )}
-                      <div className="text-xs text-gray-600">
-                        {doc.type}
-                      </div>
-                    </Link>
+                    </DocumentPreviewLink>
                   ))}
                 </div>
               </div>
             );
           })}
+
+          {/* Undated documents */}
+          {undatedDocuments.length > 0 && (
+            <div className="mb-12">
+              <div className="flex items-baseline gap-4 mb-4 border-b-2 border-gray-300 pb-2">
+                <Heading as="h2" size="lg" className="text-gray-700">
+                  Undated Documents
+                </Heading>
+                <Text color="muted" size="sm">
+                  {undatedDocuments.length}{' '}
+                  {undatedDocuments.length === 1 ? 'document' : 'documents'}
+                </Text>
+              </div>
+
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2">
+                {undatedDocuments.map((doc) => (
+                  <DocumentPreviewLink
+                    key={doc.path}
+                    doc={doc}
+                    className="block bg-white border border-gray-200 rounded px-2 py-1.5 hover:shadow-md hover:border-gray-300 transition-all"
+                  >
+                    <div className="text-xs font-medium text-gray-700 truncate" title={doc.filename}>
+                      {doc.filename}
+                    </div>
+                  </DocumentPreviewLink>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
