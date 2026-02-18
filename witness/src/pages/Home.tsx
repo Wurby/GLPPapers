@@ -1,6 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { useRandomLogo } from '../utils/logoUtils';
-import { useArchive } from '../hooks/useArchive';
+import { useArchiveData as useArchive } from '../hooks/useArchiveData';
 import { Card, Heading, Text } from '../components/ui';
 import { getTagColor } from '../utils/manifestUtils';
 

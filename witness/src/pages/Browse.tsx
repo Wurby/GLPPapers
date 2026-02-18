@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useArchive } from '../hooks/useArchive';
+import { useArchiveData as useArchive } from '../hooks/useArchiveData';
 import { Card, Heading, Text, Input } from '../components/ui';
 import { getTagColor, formatDate } from '../utils/manifestUtils';
 import { DocumentPreview } from '../components/DocumentPreview';

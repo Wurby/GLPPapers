@@ -547,3 +547,160 @@ export function getTagColor(tag: string): string {
 
   return colors[Math.abs(hash) % colors.length];
 }
+
+// ============================================================================
+// FLAT-DOCUMENT UTILITIES
+// Work directly on FlatDocument[] — used by the Firestore data source so it
+// can share derived-state logic with the static manifest source.
+// ============================================================================
+
+/**
+ * Build folder tree from a flat list of documents (no manifest required)
+ */
+export function buildFolderTreeFromDocuments(
+  documents: FlatDocument[]
+): FolderTreeNode[] {
+  const nodeMap = new Map<string, FolderTreeNode>();
+  const folderCounts = new Map<string, number>();
+
+  documents.forEach((doc) => {
+    folderCounts.set(doc.folderPath, (folderCounts.get(doc.folderPath) ?? 0) + 1);
+  });
+
+  folderCounts.forEach((count, folderPath) => {
+    const parts = folderPath.split('/');
+    if (!nodeMap.has(folderPath)) {
+      nodeMap.set(folderPath, {
+        name: parts[parts.length - 1],
+        path: folderPath,
+        children: [],
+        documentCount: count,
+        isExpanded: false,
+      });
+    }
+    for (let i = 1; i < parts.length; i++) {
+      const parentPath = parts.slice(0, i).join('/');
+      if (!nodeMap.has(parentPath)) {
+        nodeMap.set(parentPath, {
+          name: parts[i - 1],
+          path: parentPath,
+          children: [],
+          documentCount: 0,
+          isExpanded: false,
+        });
+      }
+    }
+  });
+
+  nodeMap.forEach((node, path) => {
+    const parts = path.split('/');
+    if (parts.length > 1) {
+      const parentPath = parts.slice(0, -1).join('/');
+      const parentNode = nodeMap.get(parentPath);
+      if (parentNode && !parentNode.children.some((c) => c.path === node.path)) {
+        parentNode.children.push(node);
+      }
+    }
+  });
+
+  const sortTree = (nodes: FolderTreeNode[]): FolderTreeNode[] =>
+    nodes
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((node) => ({ ...node, children: sortTree(node.children) }));
+
+  const roots: FolderTreeNode[] = [];
+  nodeMap.forEach((_node, path) => {
+    if (!path.includes('/')) roots.push(nodeMap.get(path)!);
+  });
+
+  return sortTree(roots);
+}
+
+/**
+ * Get top N tags from a flat list of documents
+ */
+export function getTopTagsFromDocuments(
+  documents: FlatDocument[],
+  limit: number = 50
+): Array<{ tag: string; count: number }> {
+  const tagCounts = new Map<string, { originalTag: string; count: number }>();
+
+  documents.forEach((doc) => {
+    doc.tags.forEach((tag) => {
+      const lower = tag.toLowerCase();
+      const existing = tagCounts.get(lower);
+      if (existing) {
+        const preferredTag =
+          tag.replace(/[a-z]/g, '').length >=
+          existing.originalTag.replace(/[a-z]/g, '').length
+            ? tag
+            : existing.originalTag;
+        tagCounts.set(lower, { originalTag: preferredTag, count: existing.count + 1 });
+      } else {
+        tagCounts.set(lower, { originalTag: tag, count: 1 });
+      }
+    });
+  });
+
+  return Array.from(tagCounts.values())
+    .map(({ originalTag, count }) => ({ tag: originalTag, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, limit);
+}
+
+/**
+ * Get document type stats from a flat list of documents
+ */
+export function getDocumentTypeStatsFromDocuments(
+  documents: FlatDocument[]
+): Array<{ type: string; count: number }> {
+  const typeCounts = new Map<string, number>();
+  documents.forEach((doc) => {
+    typeCounts.set(doc.type, (typeCounts.get(doc.type) ?? 0) + 1);
+  });
+  return Array.from(typeCounts.entries())
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+/**
+ * Calculate archive stats from a flat list of documents
+ */
+export function calculateStatsFromDocuments(documents: FlatDocument[]): ArchiveStats {
+  const tagCounts: Record<string, number> = {};
+  const typeCounts: Record<string, number> = {};
+  const folderCounts: Record<string, number> = {};
+  const folders = new Set<string>();
+  let datedCount = 0;
+  let earliest: number | null = null;
+  let latest: number | null = null;
+
+  documents.forEach((doc) => {
+    doc.tags.forEach((tag) => { tagCounts[tag] = (tagCounts[tag] ?? 0) + 1; });
+    typeCounts[doc.type] = (typeCounts[doc.type] ?? 0) + 1;
+    folders.add(doc.folderPath);
+    folderCounts[doc.folderPath] = (folderCounts[doc.folderPath] ?? 0) + 1;
+    if (doc.year !== null) {
+      datedCount++;
+      if (earliest === null || doc.year < earliest) earliest = doc.year;
+      if (latest === null || doc.year > latest) latest = doc.year;
+    }
+  });
+
+  return {
+    totalDocuments: documents.length,
+    totalFolders: folders.size,
+    documentTypes: typeCounts,
+    topTags: Object.entries(tagCounts)
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count),
+    dateRange: {
+      earliest: earliest ?? 0,
+      latest: latest ?? 0,
+      documents_with_dates: datedCount,
+      coverage_percentage:
+        documents.length > 0 ? (datedCount / documents.length) * 100 : 0,
+    },
+    documentsPerFolder: folderCounts,
+  };
+}

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useArchive } from '../hooks/useArchive';
+import { useArchiveData as useArchive } from '../hooks/useArchiveData';
 import type { FlatDocument } from '../types/archive';
 import { Card, Heading, Text } from '../components/ui';
 import { DocumentPreviewLink } from '../components/DocumentPreview';

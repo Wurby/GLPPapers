@@ -1,5 +1,6 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useArchiveFile, useArchive, useDocument } from '../hooks/useArchive';
+import { useArchiveFile, useDocument } from '../hooks/useArchive';
+import { useArchiveData as useArchive } from '../hooks/useArchiveData';
 import { useMemo } from 'react';
 import { processText } from '../utils/textProcessor';
 import { Card, Heading, Text, Button } from '../components/ui';

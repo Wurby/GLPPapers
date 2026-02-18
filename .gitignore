@@ -20,6 +20,7 @@ CLAUDE.md
 # sensitive data
 /scribe/data-processing
 /witness/public/archive
+/scripts/service-account.json
 
 # IDEs
 .vscode/

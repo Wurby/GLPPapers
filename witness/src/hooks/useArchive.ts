@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { getArchiveUrl } from '../utils/archiveUrl';
 import type {
   ArchiveManifest,
   FlatDocument,
@@ -24,7 +25,7 @@ export const useArchive = () => {
   useEffect(() => {
     const fetchManifest = async () => {
       try {
-        const response = await fetch('/archive/manifest.json');
+        const response = await fetch(getArchiveUrl('manifest.json'));
         if (!response.ok) {
           throw new Error('Failed to fetch archive manifest');
         }
@@ -86,7 +87,7 @@ export const useArchiveFile = (filePath: string) => {
   useEffect(() => {
     const fetchFile = async () => {
       try {
-        const response = await fetch(`/archive/${filePath}`);
+        const response = await fetch(getArchiveUrl(filePath));
         if (!response.ok) {
           throw new Error('Failed to fetch file');
         }
