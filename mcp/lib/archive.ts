@@ -1,89 +1,146 @@
+const PROJECT_ID = process.env.FIREBASE_PROJECT_ID ?? 'glppapers';
 const BUCKET = process.env.FIREBASE_STORAGE_BUCKET ?? 'glppapers.firebasestorage.app';
+const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 const STORAGE_BASE = `https://firebasestorage.googleapis.com/v0/b/${BUCKET}/o`;
-// manifest.json is a Vercel static file; non-www redirects to www
-const MANIFEST_URL = 'https://www.glennlpearson.org/archive/manifest.json';
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
-function storageUrl(path: string): string {
-  const encoded = path.split('/').map(encodeURIComponent).join('%2F');
+// ── Document type (mirrors Firestore FirestoreDocumentData schema) ─────────────
+
+export interface ArchiveDocument {
+  id: string;
+  fileName: string;
+  path: string;
+  folderPath: string;
+  date: string | null;
+  year: number | null;
+  dateConfidence: 'high' | 'medium' | 'low' | 'none';
+  dateSource: string;
+  timePeriod: string | null;
+  tags: string[];
+  type: string;
+  typeConfidence: 'high' | 'medium' | 'low';
+  summary: string;
+  storageRef: string; // path in Firebase Storage, e.g. "box-3/folder/file.txt"
+}
+
+// ── Firestore REST response types ─────────────────────────────────────────────
+
+type FsVal =
+  | { stringValue: string }
+  | { integerValue: string } // integers come as strings
+  | { doubleValue: number }
+  | { booleanValue: boolean }
+  | { nullValue: null }
+  | { arrayValue: { values?: FsVal[] } }
+  | { mapValue: { fields?: Record<string, FsVal> } };
+
+interface FsDoc {
+  name: string;
+  fields: Record<string, FsVal>;
+}
+
+interface FsListResponse {
+  documents?: FsDoc[];
+  nextPageToken?: string;
+}
+
+// ── Firestore field parsers ───────────────────────────────────────────────────
+
+function parseVal(v: FsVal): unknown {
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return parseInt(v.integerValue, 10);
+  if ('doubleValue' in v) return v.doubleValue;
+  if ('booleanValue' in v) return v.booleanValue;
+  if ('nullValue' in v) return null;
+  if ('arrayValue' in v) return (v.arrayValue.values ?? []).map(parseVal);
+  if ('mapValue' in v) {
+    const out: Record<string, unknown> = {};
+    for (const [k, fv] of Object.entries(v.mapValue.fields ?? {})) out[k] = parseVal(fv);
+    return out;
+  }
+  return null;
+}
+
+function str(f: Record<string, FsVal>, k: string, fallback = ''): string {
+  return f[k] ? String(parseVal(f[k]) ?? fallback) : fallback;
+}
+
+function strOrNull(f: Record<string, FsVal>, k: string): string | null {
+  if (!f[k]) return null;
+  const v = parseVal(f[k]);
+  return v != null ? String(v) : null;
+}
+
+function numOrNull(f: Record<string, FsVal>, k: string): number | null {
+  if (!f[k]) return null;
+  const v = parseVal(f[k]);
+  return typeof v === 'number' ? v : null;
+}
+
+function strArr(f: Record<string, FsVal>, k: string): string[] {
+  const v = f[k];
+  if (!v || !('arrayValue' in v)) return [];
+  return (v.arrayValue.values ?? []).map(fv => String(parseVal(fv) ?? ''));
+}
+
+function parseDoc(d: FsDoc): ArchiveDocument {
+  const f = d.fields;
+  return {
+    id: d.name.split('/').pop() ?? '',
+    fileName: str(f, 'fileName'),
+    path: str(f, 'path'),
+    folderPath: str(f, 'folderPath'),
+    date: strOrNull(f, 'date'),
+    year: numOrNull(f, 'year'),
+    dateConfidence: (str(f, 'dateConfidence') || 'none') as ArchiveDocument['dateConfidence'],
+    dateSource: str(f, 'dateSource'),
+    timePeriod: strOrNull(f, 'timePeriod'),
+    tags: strArr(f, 'tags'),
+    type: str(f, 'type'),
+    typeConfidence: (str(f, 'typeConfidence') || 'low') as ArchiveDocument['typeConfidence'],
+    summary: str(f, 'summary'),
+    storageRef: str(f, 'storageRef'),
+  };
+}
+
+// ── Cache ─────────────────────────────────────────────────────────────────────
+
+let cachedDocs: ArchiveDocument[] | null = null;
+let cacheTime = 0;
+
+export async function getDocuments(): Promise<ArchiveDocument[]> {
+  const now = Date.now();
+  if (cachedDocs && now - cacheTime < CACHE_TTL_MS) return cachedDocs;
+
+  const docs: ArchiveDocument[] = [];
+  let pageToken: string | undefined;
+
+  do {
+    const url = new URL(`${FIRESTORE_BASE}/documents`);
+    url.searchParams.set('pageSize', '300');
+    if (pageToken) url.searchParams.set('pageToken', pageToken);
+
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(`Firestore error: ${res.status}`);
+
+    const data = (await res.json()) as FsListResponse;
+    for (const d of data.documents ?? []) docs.push(parseDoc(d));
+    pageToken = data.nextPageToken;
+  } while (pageToken);
+
+  cachedDocs = docs;
+  cacheTime = now;
+  return docs;
+}
+
+// ── URL helpers ───────────────────────────────────────────────────────────────
+
+export function getDocumentUrl(storageRef: string): string {
+  const encoded = storageRef.split('/').map(encodeURIComponent).join('%2F');
   return `${STORAGE_BASE}/${encoded}?alt=media`;
 }
 
-// ── Types (mirrors witness/src/types/archive.ts) ────────────────────────────
-
-export interface DateInfo {
-  document_date: string | null;
-  date_source: string;
-  confidence: 'high' | 'medium' | 'low' | 'none';
-  time_period: string | null;
-}
-
-export interface CategoryInfo {
-  tags: string[];
-  primary_type: string;
-  confidence: 'high' | 'medium' | 'low';
-}
-
-export interface DocumentMetadata {
-  file_path: string;
-  file_name: string;
-  date: DateInfo;
-  category: CategoryInfo;
-  summary: string;
-}
-
-export interface FolderNode {
-  path: string;
-  documents: DocumentMetadata[];
-  document_count: number;
-}
-
-export interface ArchiveManifest {
-  metadata: {
-    generated_at: string;
-    total_documents: number;
-    total_folders: number;
-    date_range: {
-      earliest: number;
-      latest: number;
-      documents_with_dates: number;
-      coverage_percentage: number;
-    };
-    all_tags: Record<string, number>;
-    document_types: Record<string, number>;
-  };
-  folders: Record<string, FolderNode>;
-}
-
-// ── Manifest cache (persists across warm Vercel invocations) ────────────────
-
-let cachedManifest: ArchiveManifest | null = null;
-let cacheTime = 0;
-
-export async function getManifest(): Promise<ArchiveManifest> {
-  const now = Date.now();
-  if (cachedManifest && now - cacheTime < CACHE_TTL_MS) {
-    return cachedManifest;
-  }
-  const res = await fetch(MANIFEST_URL);
-  if (!res.ok) throw new Error(`Failed to fetch manifest: ${res.status}`);
-  cachedManifest = (await res.json()) as ArchiveManifest;
-  cacheTime = now;
-  return cachedManifest;
-}
-
-// ── Path helpers ─────────────────────────────────────────────────────────────
-
-/** Strip the "input/" prefix the manifest uses internally. */
-export function cleanPath(filePath: string): string {
-  return filePath.startsWith('input/') ? filePath.slice(6) : filePath;
-}
-
-export function getDocumentUrl(filePath: string): string {
-  return storageUrl(cleanPath(filePath));
-}
-
-// ── Search ───────────────────────────────────────────────────────────────────
+// ── Search ────────────────────────────────────────────────────────────────────
 
 export interface SearchOptions {
   query?: string;
@@ -93,54 +150,38 @@ export interface SearchOptions {
   limit?: number;
 }
 
-export function searchDocuments(
-  manifest: ArchiveManifest,
-  options: SearchOptions,
-): DocumentMetadata[] {
+export function searchDocuments(docs: ArchiveDocument[], options: SearchOptions): ArchiveDocument[] {
   const { query, tag, type, year, limit = 20 } = options;
   const q = query?.toLowerCase().trim();
-  const results: DocumentMetadata[] = [];
+  const results: ArchiveDocument[] = [];
 
-  for (const folder of Object.values(manifest.folders)) {
-    for (const doc of folder.documents) {
-      if (q) {
-        const hit =
-          doc.summary.toLowerCase().includes(q) ||
-          doc.file_name.toLowerCase().includes(q) ||
-          doc.category.tags.some((t) => t.toLowerCase().includes(q));
-        if (!hit) continue;
-      }
-
-      if (tag && !doc.category.tags.some((t) => t.toLowerCase() === tag.toLowerCase())) {
-        continue;
-      }
-
-      if (type && doc.category.primary_type.toLowerCase() !== type.toLowerCase()) {
-        continue;
-      }
-
-      if (year && doc.date.document_date) {
-        const docYear = parseInt(doc.date.document_date.slice(0, 4), 10);
-        if (docYear !== year) continue;
-      }
-
-      results.push(doc);
-      if (results.length >= limit) return results;
+  for (const doc of docs) {
+    if (q) {
+      const hit =
+        doc.summary.toLowerCase().includes(q) ||
+        doc.fileName.toLowerCase().includes(q) ||
+        doc.tags.some((t) => t.toLowerCase().includes(q));
+      if (!hit) continue;
     }
+    if (tag && !doc.tags.some((t) => t.toLowerCase() === tag.toLowerCase())) continue;
+    if (type && doc.type.toLowerCase() !== type.toLowerCase()) continue;
+    if (year && doc.year !== year) continue;
+
+    results.push(doc);
+    if (results.length >= limit) break;
   }
 
   return results;
 }
 
-// ── Formatting helpers ────────────────────────────────────────────────────────
+// ── Formatting ────────────────────────────────────────────────────────────────
 
-export function formatDocument(doc: DocumentMetadata): string {
-  const period = doc.date.time_period ?? doc.date.document_date ?? 'date unknown';
-  const tags = doc.category.tags.slice(0, 5).join(', ');
+export function formatDocument(doc: ArchiveDocument): string {
+  const period = doc.timePeriod ?? doc.date ?? 'date unknown';
   return [
-    `**${doc.file_name}** (${period})`,
-    `Type: ${doc.category.primary_type} | Tags: ${tags}`,
-    `Path: ${cleanPath(doc.file_path)}`,
+    `**${doc.fileName}** (${period})`,
+    `Type: ${doc.type} | Tags: ${doc.tags.slice(0, 5).join(', ')}`,
+    `Path: ${doc.path}`,
     `Summary: ${doc.summary}`,
   ].join('\n');
 }

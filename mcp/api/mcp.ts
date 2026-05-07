@@ -1,10 +1,9 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import {
-  getManifest,
+  getDocuments,
   searchDocuments,
   getDocumentUrl,
   formatDocument,
-  cleanPath,
 } from '../lib/archive.js';
 
 // ── MCP Protocol constants ────────────────────────────────────────────────────
@@ -200,20 +199,21 @@ async function callTool(params: unknown): Promise<ToolContent> {
       const type = args.type ? String(args.type) : undefined;
       const year = typeof args.year === 'number' ? args.year : undefined;
 
-      const manifest = await getManifest();
-      const results = searchDocuments(manifest, { query, limit, tag, type, year });
+      const docs = await getDocuments();
+      const results = searchDocuments(docs, { query, limit, tag, type, year });
 
-      if (results.length === 0) {
-        return text(`No documents found matching "${query}".`);
-      }
+      if (results.length === 0) return text(`No documents found matching "${query}".`);
       const body = results.map(formatDocument).join('\n\n---\n\n');
       return text(`Found ${results.length} document${results.length !== 1 ? 's' : ''}:\n\n${body}`);
     }
 
     case 'get_document': {
       const filePath = String(args.file_path ?? '');
-      const url = getDocumentUrl(filePath);
-      const response = await fetch(url);
+      // Look up storageRef by path; fall back to treating the path itself as the storage ref
+      const docs = await getDocuments();
+      const match = docs.find((d) => d.path === filePath || d.storageRef === filePath);
+      const storageRef = match?.storageRef ?? filePath;
+      const response = await fetch(getDocumentUrl(storageRef));
       if (!response.ok) {
         return { content: [{ type: 'text', text: `Could not fetch "${filePath}" (HTTP ${response.status}).` }], isError: true };
       }
@@ -221,50 +221,55 @@ async function callTool(params: unknown): Promise<ToolContent> {
     }
 
     case 'list_folders': {
-      const manifest = await getManifest();
-      const folders = Object.values(manifest.folders)
-        .map((f) => ({ path: cleanPath(f.path), count: f.document_count }))
-        .sort((a, b) => b.count - a.count);
-      const lines = folders.map((f) => `${f.path}  (${f.count} documents)`).join('\n');
-      return text(`${folders.length} folders:\n\n${lines}`);
+      const docs = await getDocuments();
+      const counts = new Map<string, number>();
+      for (const d of docs) counts.set(d.folderPath, (counts.get(d.folderPath) ?? 0) + 1);
+      const folders = [...counts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([path, count]) => `${path}  (${count} documents)`);
+      return text(`${counts.size} folders:\n\n${folders.join('\n')}`);
     }
 
     case 'browse_folder': {
       const folderPath = String(args.folder_path ?? '');
-      const manifest = await getManifest();
-      const rawKey = folderPath.startsWith('input/') ? folderPath : `input/${folderPath}`;
-      const folder = manifest.folders[rawKey] ?? manifest.folders[folderPath];
+      const docs = await getDocuments();
+      const folderDocs = docs.filter((d) => d.folderPath === folderPath);
 
-      if (!folder) {
-        const sample = Object.keys(manifest.folders).slice(0, 8).map(cleanPath).join('\n');
+      if (folderDocs.length === 0) {
+        const sample = [...new Set(docs.map((d) => d.folderPath))].slice(0, 8).join('\n');
         return { content: [{ type: 'text', text: `Folder "${folderPath}" not found.\n\nSample folders:\n${sample}` }], isError: true };
       }
 
-      const docs = folder.documents
-        .map((doc) => {
-          const period = doc.date.time_period ?? doc.date.document_date ?? 'date unknown';
-          return `**${doc.file_name}** (${period})\nType: ${doc.category.primary_type} | Path: ${cleanPath(doc.file_path)}`;
-        })
+      const lines = folderDocs
+        .map((d) => `**${d.fileName}** (${d.timePeriod ?? d.date ?? 'date unknown'})\nType: ${d.type} | Path: ${d.path}`)
         .join('\n\n');
-
-      return text(`${folder.document_count} documents in "${cleanPath(folder.path)}":\n\n${docs}`);
+      return text(`${folderDocs.length} documents in "${folderPath}":\n\n${lines}`);
     }
 
     case 'get_archive_stats': {
-      const manifest = await getManifest();
-      const m = manifest.metadata;
-      const topTags = Object.entries(m.all_tags).sort(([, a], [, b]) => b - a).slice(0, 15)
-        .map(([tag, count]) => `  ${tag}: ${count}`).join('\n');
-      const topTypes = Object.entries(m.document_types).sort(([, a], [, b]) => b - a).slice(0, 10)
-        .map(([type, count]) => `  ${type}: ${count}`).join('\n');
+      const docs = await getDocuments();
+      const tagCounts: Record<string, number> = {};
+      const typeCounts: Record<string, number> = {};
+      const years = docs.map((d) => d.year).filter((y): y is number => y !== null);
+      const folders = new Set(docs.map((d) => d.folderPath));
+
+      for (const d of docs) {
+        typeCounts[d.type] = (typeCounts[d.type] ?? 0) + 1;
+        for (const t of d.tags) tagCounts[t] = (tagCounts[t] ?? 0) + 1;
+      }
+
+      const topTags = Object.entries(tagCounts).sort(([, a], [, b]) => b - a).slice(0, 15)
+        .map(([t, c]) => `  ${t}: ${c}`).join('\n');
+      const topTypes = Object.entries(typeCounts).sort(([, a], [, b]) => b - a).slice(0, 10)
+        .map(([t, c]) => `  ${t}: ${c}`).join('\n');
 
       return text([
         '**Glenn L. Pearson Papers — Archive Statistics**',
         '',
-        `Total documents: ${m.total_documents}`,
-        `Total folders:   ${m.total_folders}`,
-        `Date range:      ${m.date_range.earliest} – ${m.date_range.latest}`,
-        `Dated documents: ${m.date_range.documents_with_dates} (${m.date_range.coverage_percentage}% of archive)`,
+        `Total documents: ${docs.length}`,
+        `Total folders:   ${folders.size}`,
+        `Date range:      ${Math.min(...years)} – ${Math.max(...years)}`,
+        `Dated documents: ${years.length} (${Math.round(years.length / docs.length * 100)}% of archive)`,
         '',
         '**Top document types:**',
         topTypes,
