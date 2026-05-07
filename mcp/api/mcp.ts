@@ -25,9 +25,18 @@ export default async function handler(req: IncomingMessage & { body?: unknown },
     // Vercel ESM functions don't guarantee req.body is pre-parsed — read it explicitly.
     const body = req.method === 'POST' ? await readBody(req) : undefined;
 
+    // The MCP transport requires Accept: text/event-stream. Some clients (including
+    // claude.ai) don't send it, so we normalize the header before passing through.
+    if (!req.headers['accept']?.includes('text/event-stream')) {
+      req.headers['accept'] = [req.headers['accept'], 'text/event-stream']
+        .filter(Boolean)
+        .join(', ');
+    }
+
     const server = buildServer();
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined, // stateless — no sessions needed
+      enableJsonResponse: true,       // fall back to JSON if client can't do SSE
     });
 
     res.on('close', () => {
