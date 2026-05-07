@@ -1,6 +1,13 @@
-const MANIFEST_URL = 'https://glennlpearson.org/archive/manifest.json';
-const ARCHIVE_BASE_URL = 'https://glennlpearson.org/archive';
+const BUCKET = process.env.FIREBASE_STORAGE_BUCKET ?? 'glppapers.firebasestorage.app';
+const STORAGE_BASE = `https://firebasestorage.googleapis.com/v0/b/${BUCKET}/o`;
 const CACHE_TTL_MS = 5 * 60 * 1000;
+
+function storageUrl(path: string): string {
+  const encoded = path.split('/').map(encodeURIComponent).join('%2F');
+  return `${STORAGE_BASE}/${encoded}?alt=media`;
+}
+
+const MANIFEST_URL = storageUrl('manifest.json');
 
 // ── Types (mirrors witness/src/types/archive.ts) ────────────────────────────
 
@@ -73,7 +80,7 @@ export function cleanPath(filePath: string): string {
 }
 
 export function getDocumentUrl(filePath: string): string {
-  return `${ARCHIVE_BASE_URL}/${cleanPath(filePath)}`;
+  return storageUrl(cleanPath(filePath));
 }
 
 // ── Search ───────────────────────────────────────────────────────────────────
