@@ -10,9 +10,7 @@ import {
   cleanPath,
 } from '../lib/archive.js';
 
-// Vercel passes Node's IncomingMessage / ServerResponse directly for ESM functions
 export default async function handler(req: IncomingMessage & { body?: unknown }, res: ServerResponse) {
-  // CORS — allow any MCP client to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, mcp-session-id');
@@ -23,18 +21,41 @@ export default async function handler(req: IncomingMessage & { body?: unknown },
     return;
   }
 
-  const server = buildServer();
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined, // stateless — no sessions needed
-  });
+  try {
+    // Vercel ESM functions don't guarantee req.body is pre-parsed — read it explicitly.
+    const body = req.method === 'POST' ? await readBody(req) : undefined;
 
-  res.on('close', () => {
-    transport.close();
-    server.close();
-  });
+    const server = buildServer();
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined, // stateless — no sessions needed
+    });
 
-  await server.connect(transport);
-  await transport.handleRequest(req, res, req.body);
+    res.on('close', () => {
+      transport.close();
+      server.close();
+    });
+
+    await server.connect(transport);
+    await transport.handleRequest(req, res, body);
+  } catch (err) {
+    if (!res.headersSent) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: String(err) }));
+    }
+  }
+}
+
+async function readBody(req: IncomingMessage & { body?: unknown }): Promise<unknown> {
+  if (req.body !== undefined) return req.body;
+  return new Promise((resolve, reject) => {
+    let raw = '';
+    req.on('data', (chunk: Buffer) => { raw += chunk.toString(); });
+    req.on('end', () => {
+      try { resolve(raw.length ? JSON.parse(raw) : undefined); }
+      catch { resolve(undefined); }
+    });
+    req.on('error', reject);
+  });
 }
 
 // ── MCP server definition ────────────────────────────────────────────────────
