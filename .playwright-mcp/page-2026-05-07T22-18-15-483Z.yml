@@ -1,0 +1,120 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - generic [ref=e9]:
+        - button "Notifications" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]:
+            - img [ref=e13]
+            - generic [ref=e1039]: "7"
+        - button [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+        - button "Account settings" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+  - generic [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - button [ref=e25] [cursor=pointer]:
+          - img [ref=e27]
+        - generic [ref=e30]:
+          - heading "Charter Connect" [level=6] [ref=e31]
+          - generic [ref=e34]: Charter Connect
+      - button [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+    - generic [ref=e39]:
+      - img [ref=e41] [cursor=pointer]
+      - generic [ref=e42]:
+        - heading "Charter Connect" [level=6] [ref=e43]
+        - generic [ref=e44]: School User (M)
+    - list [ref=e45]:
+      - link "Dashboard" [ref=e46] [cursor=pointer]:
+        - /url: /main/dashboard
+        - img [ref=e48]
+        - generic [ref=e51]: Dashboard
+      - link "Applications" [ref=e52] [cursor=pointer]:
+        - /url: /main/applications
+        - img [ref=e54]
+        - generic [ref=e57]: Applications
+        - img [ref=e58]
+      - link "Historical" [ref=e76] [cursor=pointer]:
+        - /url: /main/historical
+        - img [ref=e78]
+        - generic [ref=e81]: Historical
+      - button "Configuration" [active] [ref=e82] [cursor=pointer]:
+        - img [ref=e84]
+        - generic [ref=e88]: Configuration
+        - img [ref=e89]
+      - generic [ref=e1118]:
+        - link "Enrollment settings" [ref=e1119] [cursor=pointer]:
+          - /url: /main/enrollment-settings
+          - img [ref=e1121]
+          - generic [ref=e1124]: Enrollment settings
+        - link "Priorities configuration" [ref=e1125] [cursor=pointer]:
+          - /url: /main/priorities-configuration
+          - img [ref=e1127]
+          - generic [ref=e1130]: Priorities configuration
+        - link "Tags configuration" [ref=e1131] [cursor=pointer]:
+          - /url: /main/application-tags
+          - img [ref=e1133]
+          - generic [ref=e1136]: Tags configuration
+      - link "Ads Tracking" [ref=e91] [cursor=pointer]:
+        - /url: /main/ads/tracking
+        - img [ref=e93]
+        - generic [ref=e96]: Ads Tracking
+    - img "Drawer footer image" [ref=e98]
+  - main [ref=e99]:
+    - generic [ref=e1040]:
+      - generic [ref=e1043]:
+        - navigation [ref=e1044]:
+          - list [ref=e1045]:
+            - listitem [ref=e1046]:
+              - link "Ads" [ref=e1047] [cursor=pointer]:
+                - /url: /main/ads
+            - listitem [ref=e1048]: /
+            - listitem [ref=e1049]: Ads Tracking
+        - heading "Ads Tracking" [level=1] [ref=e1050]
+      - generic [ref=e1051]:
+        - generic [ref=e1053]:
+          - generic [ref=e1054]: Please select an option
+          - generic [ref=e1055]:
+            - combobox "Please select an option THIS MONTH" [ref=e1056] [cursor=pointer]: THIS MONTH
+            - textbox: "1"
+            - img
+            - button [ref=e1058] [cursor=pointer]:
+              - img [ref=e1059]
+            - group:
+              - generic: Please select an option
+        - generic [ref=e1061]:
+          - generic [ref=e1062]:
+            - heading "Leads submitted" [level=6] [ref=e1063]
+            - img [ref=e1064]
+          - generic [ref=e1065]:
+            - paragraph [ref=e1067]: GOOGLE
+            - paragraph [ref=e1070]: FACEBOOK
+            - button "Export" [ref=e1073] [cursor=pointer]:
+              - img [ref=e1075]
+              - text: Export
+          - generic [ref=e1077]:
+            - heading "Confirmed applications" [level=6] [ref=e1078]
+            - img [ref=e1079]
+        - generic [ref=e1080]:
+          - generic [ref=e1081]:
+            - heading "Leads submitted" [level=6] [ref=e1082]
+            - generic [ref=e1084]:
+              - paragraph [ref=e1086]: GOOGLE
+              - paragraph [ref=e1089]: FACEBOOK
+              - button "Export" [ref=e1092] [cursor=pointer]:
+                - img [ref=e1094]
+                - text: Export
+          - img [ref=e1096]
+        - generic [ref=e1097]:
+          - generic [ref=e1098]:
+            - heading "Confirmed applications" [level=6] [ref=e1099]
+            - generic [ref=e1101]:
+              - paragraph [ref=e1103]: GOOGLE
+              - paragraph [ref=e1106]: FACEBOOK
+              - button "Export" [ref=e1109] [cursor=pointer]:
+                - img [ref=e1111]
+                - text: Export
+          - img [ref=e1113]

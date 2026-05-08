@@ -1,0 +1,796 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - button [ref=e6] [cursor=pointer]:
+        - img [ref=e7]
+      - generic [ref=e9]:
+        - button "Notifications" [ref=e11] [cursor=pointer]:
+          - img [ref=e13]
+        - button [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+        - button "Account settings" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+  - generic [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - button [ref=e25] [cursor=pointer]:
+          - img [ref=e27]
+        - generic [ref=e30]:
+          - heading "Charter Connect" [level=6] [ref=e31]
+          - generic [ref=e34]: Charter Connect
+      - button [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+    - generic [ref=e39]:
+      - img [ref=e41] [cursor=pointer]
+      - generic [ref=e42]:
+        - heading "Charter Connect" [level=6] [ref=e43]
+        - generic [ref=e44]: School User (M)
+    - list [ref=e45]:
+      - link "Dashboard" [ref=e46] [cursor=pointer]:
+        - /url: /main/dashboard
+        - img [ref=e48]
+        - generic [ref=e51]: Dashboard
+      - link "Applications" [ref=e52] [cursor=pointer]:
+        - /url: /main/applications
+        - img [ref=e54]
+        - generic [ref=e57]: Applications
+        - img [ref=e58]
+      - generic [ref=e63]:
+        - link "Denied list" [ref=e64] [cursor=pointer]:
+          - /url: /main/applications/denied-applications
+          - img [ref=e66]
+          - generic [ref=e69]: Denied list
+        - link "Declined list" [ref=e70] [cursor=pointer]:
+          - /url: /main/applications/declined-list
+          - img [ref=e72]
+          - generic [ref=e75]: Declined list
+      - link "Historical" [ref=e76] [cursor=pointer]:
+        - /url: /main/historical
+        - img [ref=e78]
+        - generic [ref=e81]: Historical
+      - button "Configuration" [ref=e82] [cursor=pointer]:
+        - img [ref=e84]
+        - generic [ref=e88]: Configuration
+        - img [ref=e89]
+      - link "Ads Tracking" [ref=e91] [cursor=pointer]:
+        - /url: /main/ads/tracking
+        - img [ref=e93]
+        - generic [ref=e96]: Ads Tracking
+    - img "Drawer footer image" [ref=e98]
+  - main [ref=e99]:
+    - generic [ref=e102]:
+      - generic [ref=e103]:
+        - heading "Applications" [level=1] [ref=e106]
+        - button [ref=e109] [cursor=pointer]:
+          - img [ref=e110]
+      - generic [ref=e113]:
+        - tablist [ref=e118]:
+          - tab "Applications" [selected] [ref=e119] [cursor=pointer]:
+            - generic [ref=e120]: Applications
+          - tab "Selected list" [ref=e121] [cursor=pointer]:
+            - generic [ref=e122]: Selected list
+          - tab "Waiting list" [ref=e123] [cursor=pointer]:
+            - generic [ref=e124]: Waiting list
+        - tabpanel "Applications" [ref=e127]:
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - generic [ref=e130]:
+                - generic: Filter by status
+                - generic [ref=e131]:
+                  - combobox "Filter by status" [ref=e132] [cursor=pointer]
+                  - textbox
+                  - img
+                  - group:
+                    - generic: Filter by status
+              - generic [ref=e133]:
+                - generic: Filter by tag
+                - generic [ref=e134]:
+                  - combobox "Filter by tag" [ref=e135] [cursor=pointer]
+                  - textbox
+                  - img
+                  - group:
+                    - generic: Filter by tag
+              - generic [ref=e136]:
+                - generic: Filter by grade
+                - generic [ref=e137]:
+                  - combobox "Filter by grade" [ref=e138] [cursor=pointer]
+                  - textbox
+                  - img
+                  - group:
+                    - generic: Filter by grade
+              - generic [ref=e139]:
+                - generic: Search application by ID or applicant name
+                - generic [ref=e140]:
+                  - textbox [ref=e141]
+                  - img [ref=e143]
+                  - group:
+                    - generic: Search application by ID or applicant name
+            - grid [ref=e146]:
+              - generic [ref=e147]:
+                - rowgroup [ref=e149]:
+                  - row "Select all rows Date ID Applicant Email Grade Status Actions" [ref=e150]:
+                    - columnheader "Select all rows" [ref=e151]:
+                      - generic [ref=e155] [cursor=pointer]:
+                        - checkbox "Select all rows" [ref=e156]
+                        - img [ref=e157]
+                    - columnheader "Date" [ref=e159]:
+                      - generic "Date" [ref=e163]
+                    - columnheader "ID" [ref=e164] [cursor=pointer]:
+                      - generic "ID" [ref=e168]
+                    - columnheader "Applicant" [ref=e169] [cursor=pointer]:
+                      - generic "Applicant" [ref=e173]
+                    - columnheader "Email" [ref=e174]:
+                      - generic "Email" [ref=e178]
+                    - columnheader "Grade" [ref=e179]:
+                      - generic "This column has a value getter and is not sortable." [ref=e183]: Grade
+                    - columnheader "Status" [ref=e184] [cursor=pointer]:
+                      - generic "Status" [ref=e188]
+                    - columnheader "Actions" [ref=e189]:
+                      - generic "Actions" [ref=e193]
+                - generic [ref=e196]:
+                  - row "Select row 5/4/2026, 5:56 PM APP-83-2026-5 Nichelle Holder Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e197]:
+                    - cell "Select row" [ref=e198]:
+                      - generic [ref=e199] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e200]
+                        - img [ref=e201]
+                    - cell "5/4/2026, 5:56 PM" [ref=e203]
+                    - cell "APP-83-2026-5" [ref=e204]:
+                      - paragraph [ref=e206]: APP-83-2026-5
+                    - cell "Nichelle Holder" [ref=e207]:
+                      - generic "Nichelle Holder" [ref=e208]
+                    - cell "Copy to clipboard" [ref=e209]:
+                      - paragraph [ref=e210] [cursor=pointer]: nholder@brickeducation.org
+                    - cell "Not selected" [ref=e211]:
+                      - paragraph [ref=e213]: Not selected
+                    - cell "CONTACTED" [ref=e214]:
+                      - generic [ref=e216]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e217]:
+                      - generic "Go to application" [ref=e218]:
+                        - button [ref=e219] [cursor=pointer]:
+                          - img [ref=e220]
+                      - generic "Status history" [ref=e222]:
+                        - button [ref=e223] [cursor=pointer]:
+                          - img [ref=e224]
+                      - generic "More actions" [ref=e226]:
+                        - button [ref=e227] [cursor=pointer]:
+                          - img [ref=e228]
+                  - row "Select row 3/26/2026, 10:32 AM Form submission from LEAD to CONTACTED Rhonda Dillingham Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e230]:
+                    - cell "Select row" [ref=e231]:
+                      - generic [ref=e232] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e233]
+                        - img [ref=e234]
+                    - cell "3/26/2026, 10:32 AM" [ref=e236]
+                    - cell "Form submission from LEAD to CONTACTED" [ref=e237]:
+                      - generic "Form submission from LEAD to CONTACTED" [ref=e238]:
+                        - paragraph [ref=e239]: APP-83-2026-4
+                    - cell "Rhonda Dillingham" [ref=e241]:
+                      - generic "Rhonda Dillingham" [ref=e242]
+                    - cell "Copy to clipboard" [ref=e243]:
+                      - paragraph [ref=e244] [cursor=pointer]: rhonda@ncpubliccharters.org
+                    - cell "Not selected" [ref=e245]:
+                      - paragraph [ref=e247]: Not selected
+                    - cell "CONTACTED" [ref=e248]:
+                      - generic [ref=e250]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e251]:
+                      - generic "Go to application" [ref=e252]:
+                        - button [ref=e253] [cursor=pointer]:
+                          - img [ref=e254]
+                      - generic "Status history" [ref=e256]:
+                        - button [ref=e257] [cursor=pointer]:
+                          - img [ref=e258]
+                      - generic "More actions" [ref=e260]:
+                        - button [ref=e261] [cursor=pointer]:
+                          - img [ref=e262]
+                  - row "Select row 3/11/2026, 5:51 PM Form submission from LEAD to CONTACTED chris horton Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e264]:
+                    - cell "Select row" [ref=e265]:
+                      - generic [ref=e266] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e267]
+                        - img [ref=e268]
+                    - cell "3/11/2026, 5:51 PM" [ref=e270]
+                    - cell "Form submission from LEAD to CONTACTED" [ref=e271]:
+                      - generic "Form submission from LEAD to CONTACTED" [ref=e272]:
+                        - paragraph [ref=e273]: APP-83-2026-3
+                    - cell "chris horton" [ref=e275]:
+                      - generic "chris horton" [ref=e276]
+                    - cell "Copy to clipboard" [ref=e277]:
+                      - paragraph [ref=e278] [cursor=pointer]: chorton@arkansasoutdooracademy.org
+                    - cell "Not selected" [ref=e279]:
+                      - paragraph [ref=e281]: Not selected
+                    - cell "CONTACTED" [ref=e282]:
+                      - generic [ref=e284]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e285]:
+                      - generic "Go to application" [ref=e286]:
+                        - button [ref=e287] [cursor=pointer]:
+                          - img [ref=e288]
+                      - generic "Status history" [ref=e290]:
+                        - button [ref=e291] [cursor=pointer]:
+                          - img [ref=e292]
+                      - generic "More actions" [ref=e294]:
+                        - button [ref=e295] [cursor=pointer]:
+                          - img [ref=e296]
+                  - row "Select row 3/6/2026, 7:08 AM Form submission from LEAD to CONTACTED Darren McCormick Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e298]:
+                    - cell "Select row" [ref=e299]:
+                      - generic [ref=e300] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e301]
+                        - img [ref=e302]
+                    - cell "3/6/2026, 7:08 AM" [ref=e304]
+                    - cell "Form submission from LEAD to CONTACTED" [ref=e305]:
+                      - generic "Form submission from LEAD to CONTACTED" [ref=e306]:
+                        - paragraph [ref=e307]: APP-83-2026-2
+                    - cell "Darren McCormick" [ref=e309]:
+                      - generic "Darren McCormick" [ref=e310]
+                    - cell "Copy to clipboard" [ref=e311]:
+                      - paragraph [ref=e312] [cursor=pointer]: darren.mccormick@phcharter.org
+                    - cell "Not selected" [ref=e313]:
+                      - paragraph [ref=e315]: Not selected
+                    - cell "CONTACTED" [ref=e316]:
+                      - generic [ref=e318]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e319]:
+                      - generic "Go to application" [ref=e320]:
+                        - button [ref=e321] [cursor=pointer]:
+                          - img [ref=e322]
+                      - generic "Status history" [ref=e324]:
+                        - button [ref=e325] [cursor=pointer]:
+                          - img [ref=e326]
+                      - generic "More actions" [ref=e328]:
+                        - button [ref=e329] [cursor=pointer]:
+                          - img [ref=e330]
+                  - row "Select row 3/5/2026, 10:47 AM Form submission from LEAD to CONTACTED Matthew Sherman Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e332]:
+                    - cell "Select row" [ref=e333]:
+                      - generic [ref=e334] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e335]
+                        - img [ref=e336]
+                    - cell "3/5/2026, 10:47 AM" [ref=e338]
+                    - cell "Form submission from LEAD to CONTACTED" [ref=e339]:
+                      - generic "Form submission from LEAD to CONTACTED" [ref=e340]:
+                        - paragraph [ref=e341]: APP-83-2026-1
+                    - cell "Matthew Sherman" [ref=e343]:
+                      - generic "Matthew Sherman" [ref=e344]
+                    - cell "Copy to clipboard" [ref=e345]:
+                      - paragraph [ref=e346] [cursor=pointer]: msherman@odyssey-academy.com
+                    - cell "Not selected" [ref=e347]:
+                      - paragraph [ref=e349]: Not selected
+                    - cell "CONTACTED" [ref=e350]:
+                      - generic [ref=e352]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e353]:
+                      - generic "Go to application" [ref=e354]:
+                        - button [ref=e355] [cursor=pointer]:
+                          - img [ref=e356]
+                      - generic "Status history" [ref=e358]:
+                        - button [ref=e359] [cursor=pointer]:
+                          - img [ref=e360]
+                      - generic "More actions" [ref=e362]:
+                        - button [ref=e363] [cursor=pointer]:
+                          - img [ref=e364]
+                  - row "Select row 12/16/2025, 10:35 AM APP-83-2025-16 Angela Montagna Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e366]:
+                    - cell "Select row" [ref=e367]:
+                      - generic [ref=e368] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e369]
+                        - img [ref=e370]
+                    - cell "12/16/2025, 10:35 AM" [ref=e372]
+                    - cell "APP-83-2025-16" [ref=e373]:
+                      - paragraph [ref=e375]: APP-83-2025-16
+                    - cell "Angela Montagna" [ref=e376]:
+                      - generic "Angela Montagna" [ref=e377]
+                    - cell "Copy to clipboard" [ref=e378]:
+                      - paragraph [ref=e379] [cursor=pointer]: amontagna@gmail.com
+                    - cell "Not selected" [ref=e380]:
+                      - paragraph [ref=e382]: Not selected
+                    - cell "CONTACTED" [ref=e383]:
+                      - generic [ref=e385]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e386]:
+                      - generic "Go to application" [ref=e387]:
+                        - button [ref=e388] [cursor=pointer]:
+                          - img [ref=e389]
+                      - generic "Status history" [ref=e391]:
+                        - button [ref=e392] [cursor=pointer]:
+                          - img [ref=e393]
+                      - generic "More actions" [ref=e395]:
+                        - button [ref=e396] [cursor=pointer]:
+                          - img [ref=e397]
+                  - row "Select row 10/28/2025, 8:01 PM APP-83-2025-15 Dr. Sherria Grubbs Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e399]:
+                    - cell "Select row" [ref=e400]:
+                      - generic [ref=e401] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e402]
+                        - img [ref=e403]
+                    - cell "10/28/2025, 8:01 PM" [ref=e405]
+                    - cell "APP-83-2025-15" [ref=e406]:
+                      - paragraph [ref=e408]: APP-83-2025-15
+                    - cell "Dr. Sherria Grubbs" [ref=e409]:
+                      - generic "Dr. Sherria Grubbs" [ref=e410]
+                    - cell "Copy to clipboard" [ref=e411]:
+                      - paragraph [ref=e412] [cursor=pointer]: sherriagrubbs4@gmail.com
+                    - cell "Not selected" [ref=e413]:
+                      - paragraph [ref=e415]: Not selected
+                    - cell "CONTACTED" [ref=e416]:
+                      - generic [ref=e418]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e419]:
+                      - generic "Go to application" [ref=e420]:
+                        - button [ref=e421] [cursor=pointer]:
+                          - img [ref=e422]
+                      - generic "Status history" [ref=e424]:
+                        - button [ref=e425] [cursor=pointer]:
+                          - img [ref=e426]
+                      - generic "More actions" [ref=e428]:
+                        - button [ref=e429] [cursor=pointer]:
+                          - img [ref=e430]
+                  - row "Select row 10/13/2025, 8:37 PM APP-83-2025-14 Steven Perricelli Jr Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e432]:
+                    - cell "Select row" [ref=e433]:
+                      - generic [ref=e434] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e435]
+                        - img [ref=e436]
+                    - cell "10/13/2025, 8:37 PM" [ref=e438]
+                    - cell "APP-83-2025-14" [ref=e439]:
+                      - paragraph [ref=e441]: APP-83-2025-14
+                    - cell "Steven Perricelli Jr" [ref=e442]:
+                      - generic "Steven Perricelli Jr" [ref=e443]
+                    - cell "Copy to clipboard" [ref=e444]:
+                      - paragraph [ref=e445] [cursor=pointer]: jrsvp06@gmail.com
+                    - cell "Not selected" [ref=e446]:
+                      - paragraph [ref=e448]: Not selected
+                    - cell "CONTACTED" [ref=e449]:
+                      - generic [ref=e451]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e452]:
+                      - generic "Go to application" [ref=e453]:
+                        - button [ref=e454] [cursor=pointer]:
+                          - img [ref=e455]
+                      - generic "Status history" [ref=e457]:
+                        - button [ref=e458] [cursor=pointer]:
+                          - img [ref=e459]
+                      - generic "More actions" [ref=e461]:
+                        - button [ref=e462] [cursor=pointer]:
+                          - img [ref=e463]
+                  - row "Select row 9/29/2025, 12:31 PM APP-83-2025-13 Mark Cockrell Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e465]:
+                    - cell "Select row" [ref=e466]:
+                      - generic [ref=e467] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e468]
+                        - img [ref=e469]
+                    - cell "9/29/2025, 12:31 PM" [ref=e471]
+                    - cell "APP-83-2025-13" [ref=e472]:
+                      - paragraph [ref=e474]: APP-83-2025-13
+                    - cell "Mark Cockrell" [ref=e475]:
+                      - generic "Mark Cockrell" [ref=e476]
+                    - cell "Copy to clipboard" [ref=e477]:
+                      - paragraph [ref=e478] [cursor=pointer]: cockrellm@necprepschool.com
+                    - cell "Not selected" [ref=e479]:
+                      - paragraph [ref=e481]: Not selected
+                    - cell "CONTACTED" [ref=e482]:
+                      - generic [ref=e484]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e485]:
+                      - generic "Go to application" [ref=e486]:
+                        - button [ref=e487] [cursor=pointer]:
+                          - img [ref=e488]
+                      - generic "Status history" [ref=e490]:
+                        - button [ref=e491] [cursor=pointer]:
+                          - img [ref=e492]
+                      - generic "More actions" [ref=e494]:
+                        - button [ref=e495] [cursor=pointer]:
+                          - img [ref=e496]
+                  - row "Select row 9/10/2025, 5:22 PM APP-83-2025-12 Wayne Tucker Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e498]:
+                    - cell "Select row" [ref=e499]:
+                      - generic [ref=e500] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e501]
+                        - img [ref=e502]
+                    - cell "9/10/2025, 5:22 PM" [ref=e504]
+                    - cell "APP-83-2025-12" [ref=e505]:
+                      - paragraph [ref=e507]: APP-83-2025-12
+                    - cell "Wayne Tucker" [ref=e508]:
+                      - generic "Wayne Tucker" [ref=e509]
+                    - cell "Copy to clipboard" [ref=e510]:
+                      - paragraph [ref=e511] [cursor=pointer]: wtucker@ppep.org
+                    - cell "Not selected" [ref=e512]:
+                      - paragraph [ref=e514]: Not selected
+                    - cell "CONTACTED" [ref=e515]:
+                      - generic [ref=e517]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e518]:
+                      - generic "Go to application" [ref=e519]:
+                        - button [ref=e520] [cursor=pointer]:
+                          - img [ref=e521]
+                      - generic "Status history" [ref=e523]:
+                        - button [ref=e524] [cursor=pointer]:
+                          - img [ref=e525]
+                      - generic "More actions" [ref=e527]:
+                        - button [ref=e528] [cursor=pointer]:
+                          - img [ref=e529]
+                  - row "Select row 9/3/2025, 7:00 AM APP-83-2025-11 Danielle Snyder Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e531]:
+                    - cell "Select row" [ref=e532]:
+                      - generic [ref=e533] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e534]
+                        - img [ref=e535]
+                    - cell "9/3/2025, 7:00 AM" [ref=e537]
+                    - cell "APP-83-2025-11" [ref=e538]:
+                      - paragraph [ref=e540]: APP-83-2025-11
+                    - cell "Danielle Snyder" [ref=e541]:
+                      - generic "Danielle Snyder" [ref=e542]
+                    - cell "Copy to clipboard" [ref=e543]:
+                      - paragraph [ref=e544] [cursor=pointer]: danielle.snyder@navigatoracademy.com
+                    - cell "Not selected" [ref=e545]:
+                      - paragraph [ref=e547]: Not selected
+                    - cell "CONTACTED" [ref=e548]:
+                      - generic [ref=e550]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e551]:
+                      - generic "Go to application" [ref=e552]:
+                        - button [ref=e553] [cursor=pointer]:
+                          - img [ref=e554]
+                      - generic "Status history" [ref=e556]:
+                        - button [ref=e557] [cursor=pointer]:
+                          - img [ref=e558]
+                      - generic "More actions" [ref=e560]:
+                        - button [ref=e561] [cursor=pointer]:
+                          - img [ref=e562]
+                  - row "Select row 8/22/2025, 9:50 AM APP-83-2025-10 Tammy Greer Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e564]:
+                    - cell "Select row" [ref=e565]:
+                      - generic [ref=e566] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e567]
+                        - img [ref=e568]
+                    - cell "8/22/2025, 9:50 AM" [ref=e570]
+                    - cell "APP-83-2025-10" [ref=e571]:
+                      - paragraph [ref=e573]: APP-83-2025-10
+                    - cell "Tammy Greer" [ref=e574]:
+                      - generic "Tammy Greer" [ref=e575]
+                    - cell "Copy to clipboard" [ref=e576]:
+                      - paragraph [ref=e577] [cursor=pointer]: tgreer@havenacademy.org
+                    - cell "Not selected" [ref=e578]:
+                      - paragraph [ref=e580]: Not selected
+                    - cell "CONTACTED" [ref=e581]:
+                      - generic [ref=e583]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e584]:
+                      - generic "Go to application" [ref=e585]:
+                        - button [ref=e586] [cursor=pointer]:
+                          - img [ref=e587]
+                      - generic "Status history" [ref=e589]:
+                        - button [ref=e590] [cursor=pointer]:
+                          - img [ref=e591]
+                      - generic "More actions" [ref=e593]:
+                        - button [ref=e594] [cursor=pointer]:
+                          - img [ref=e595]
+                  - row "Select row 5/19/2025, 12:50 PM APP-83-2025-6 Nakia Cook Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e597]:
+                    - cell "Select row" [ref=e598]:
+                      - generic [ref=e599] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e600]
+                        - img [ref=e601]
+                    - cell "5/19/2025, 12:50 PM" [ref=e603]
+                    - cell "APP-83-2025-6" [ref=e604]:
+                      - paragraph [ref=e606]: APP-83-2025-6
+                    - cell "Nakia Cook" [ref=e607]:
+                      - generic "Nakia Cook" [ref=e608]
+                    - cell "Copy to clipboard" [ref=e609]:
+                      - paragraph [ref=e610] [cursor=pointer]: ncook@hydebrooklyn.org
+                    - cell "Not selected" [ref=e611]:
+                      - paragraph [ref=e613]: Not selected
+                    - cell "CONTACTED" [ref=e614]:
+                      - generic [ref=e616]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e617]:
+                      - generic "Go to application" [ref=e618]:
+                        - button [ref=e619] [cursor=pointer]:
+                          - img [ref=e620]
+                      - generic "Status history" [ref=e622]:
+                        - button [ref=e623] [cursor=pointer]:
+                          - img [ref=e624]
+                      - generic "More actions" [ref=e626]:
+                        - button [ref=e627] [cursor=pointer]:
+                          - img [ref=e628]
+                  - row "Select row 4/23/2025, 10:22 AM APP-83-2025-3 Jim Smith Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e630]:
+                    - cell "Select row" [ref=e631]:
+                      - generic [ref=e632] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e633]
+                        - img [ref=e634]
+                    - cell "4/23/2025, 10:22 AM" [ref=e636]
+                    - cell "APP-83-2025-3" [ref=e637]:
+                      - paragraph [ref=e639]: APP-83-2025-3
+                    - cell "Jim Smith" [ref=e640]:
+                      - generic "Jim Smith" [ref=e641]
+                    - cell "Copy to clipboard" [ref=e642]:
+                      - paragraph [ref=e643] [cursor=pointer]: jim.smith@thevanguardschool.com
+                    - cell "Not selected" [ref=e644]:
+                      - paragraph [ref=e646]: Not selected
+                    - cell "CONTACTED" [ref=e647]:
+                      - generic [ref=e649]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e650]:
+                      - generic "Go to application" [ref=e651]:
+                        - button [ref=e652] [cursor=pointer]:
+                          - img [ref=e653]
+                      - generic "Status history" [ref=e655]:
+                        - button [ref=e656] [cursor=pointer]:
+                          - img [ref=e657]
+                      - generic "More actions" [ref=e659]:
+                        - button [ref=e660] [cursor=pointer]:
+                          - img [ref=e661]
+                  - row "Select row 10/4/2024, 8:49 AM APP-83-2024-22 Jonathon Marowelli Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e663]:
+                    - cell "Select row" [ref=e664]:
+                      - generic [ref=e665] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e666]
+                        - img [ref=e667]
+                    - cell "10/4/2024, 8:49 AM" [ref=e669]
+                    - cell "APP-83-2024-22" [ref=e670]:
+                      - paragraph [ref=e672]: APP-83-2024-22
+                    - cell "Jonathon Marowelli" [ref=e673]:
+                      - generic "Jonathon Marowelli" [ref=e674]
+                    - cell "Copy to clipboard" [ref=e675]:
+                      - paragraph [ref=e676] [cursor=pointer]: jonathon.marowelli@jacksonpec.org
+                    - cell "Not selected" [ref=e677]:
+                      - paragraph [ref=e679]: Not selected
+                    - cell "CONTACTED" [ref=e680]:
+                      - generic [ref=e682]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e683]:
+                      - generic "Go to application" [ref=e684]:
+                        - button [ref=e685] [cursor=pointer]:
+                          - img [ref=e686]
+                      - generic "Status history" [ref=e688]:
+                        - button [ref=e689] [cursor=pointer]:
+                          - img [ref=e690]
+                      - generic "More actions" [ref=e692]:
+                        - button [ref=e693] [cursor=pointer]:
+                          - img [ref=e694]
+                  - row "Select row 9/23/2024, 4:33 AM APP-83-2024-19 Dr. Bruce Tabor Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e696]:
+                    - cell "Select row" [ref=e697]:
+                      - generic [ref=e698] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e699]
+                        - img [ref=e700]
+                    - cell "9/23/2024, 4:33 AM" [ref=e702]
+                    - cell "APP-83-2024-19" [ref=e703]:
+                      - paragraph [ref=e705]: APP-83-2024-19
+                    - cell "Dr. Bruce Tabor" [ref=e706]:
+                      - generic "Dr. Bruce Tabor" [ref=e707]
+                    - cell "Copy to clipboard" [ref=e708]:
+                      - paragraph [ref=e709] [cursor=pointer]: bruce.tabor@goodwatermontessori.org
+                    - cell "Not selected" [ref=e710]:
+                      - paragraph [ref=e712]: Not selected
+                    - cell "CONTACTED" [ref=e713]:
+                      - generic [ref=e715]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e716]:
+                      - generic "Go to application" [ref=e717]:
+                        - button [ref=e718] [cursor=pointer]:
+                          - img [ref=e719]
+                      - generic "Status history" [ref=e721]:
+                        - button [ref=e722] [cursor=pointer]:
+                          - img [ref=e723]
+                      - generic "More actions" [ref=e725]:
+                        - button [ref=e726] [cursor=pointer]:
+                          - img [ref=e727]
+                  - row "Select row 9/17/2024, 1:33 PM APP-83-2024-18 Lori Webster Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e729]:
+                    - cell "Select row" [ref=e730]:
+                      - generic [ref=e731] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e732]
+                        - img [ref=e733]
+                    - cell "9/17/2024, 1:33 PM" [ref=e735]
+                    - cell "APP-83-2024-18" [ref=e736]:
+                      - paragraph [ref=e738]: APP-83-2024-18
+                    - cell "Lori Webster" [ref=e739]:
+                      - generic "Lori Webster" [ref=e740]
+                    - cell "Copy to clipboard" [ref=e741]:
+                      - paragraph [ref=e742] [cursor=pointer]: l.webster@mountainmahogany.org
+                    - cell "Not selected" [ref=e743]:
+                      - paragraph [ref=e745]: Not selected
+                    - cell "CONTACTED" [ref=e746]:
+                      - generic [ref=e748]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e749]:
+                      - generic "Go to application" [ref=e750]:
+                        - button [ref=e751] [cursor=pointer]:
+                          - img [ref=e752]
+                      - generic "Status history" [ref=e754]:
+                        - button [ref=e755] [cursor=pointer]:
+                          - img [ref=e756]
+                      - generic "More actions" [ref=e758]:
+                        - button [ref=e759] [cursor=pointer]:
+                          - img [ref=e760]
+                  - row "Select row 9/10/2024, 8:28 AM APP-83-2024-17 Elizabeth Zehnpfennig Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e762]:
+                    - cell "Select row" [ref=e763]:
+                      - generic [ref=e764] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e765]
+                        - img [ref=e766]
+                    - cell "9/10/2024, 8:28 AM" [ref=e768]
+                    - cell "APP-83-2024-17" [ref=e769]:
+                      - paragraph [ref=e771]: APP-83-2024-17
+                    - cell "Elizabeth Zehnpfennig" [ref=e772]:
+                      - generic "Elizabeth Zehnpfennig" [ref=e773]
+                    - cell "Copy to clipboard" [ref=e774]:
+                      - paragraph [ref=e775] [cursor=pointer]: ezehnpfennig@tcgis.org
+                    - cell "Not selected" [ref=e776]:
+                      - paragraph [ref=e778]: Not selected
+                    - cell "CONTACTED" [ref=e779]:
+                      - generic [ref=e781]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e782]:
+                      - generic "Go to application" [ref=e783]:
+                        - button [ref=e784] [cursor=pointer]:
+                          - img [ref=e785]
+                      - generic "Status history" [ref=e787]:
+                        - button [ref=e788] [cursor=pointer]:
+                          - img [ref=e789]
+                      - generic "More actions" [ref=e791]:
+                        - button [ref=e792] [cursor=pointer]:
+                          - img [ref=e793]
+                  - row "Select row 9/6/2024, 11:00 AM APP-83-2024-16 Alejandra Mesa Martinez Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e795]:
+                    - cell "Select row" [ref=e796]:
+                      - generic [ref=e797] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e798]
+                        - img [ref=e799]
+                    - cell "9/6/2024, 11:00 AM" [ref=e801]
+                    - cell "APP-83-2024-16" [ref=e802]:
+                      - paragraph [ref=e804]: APP-83-2024-16
+                    - cell "Alejandra Mesa Martinez" [ref=e805]:
+                      - generic "Alejandra Mesa Martinez" [ref=e806]
+                    - cell "Copy to clipboard" [ref=e807]:
+                      - paragraph [ref=e808] [cursor=pointer]: aleja.mesa619@gmail.com
+                    - cell "Not selected" [ref=e809]:
+                      - paragraph [ref=e811]: Not selected
+                    - cell "CONTACTED" [ref=e812]:
+                      - generic [ref=e814]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e815]:
+                      - generic "Go to application" [ref=e816]:
+                        - button [ref=e817] [cursor=pointer]:
+                          - img [ref=e818]
+                      - generic "Status history" [ref=e820]:
+                        - button [ref=e821] [cursor=pointer]:
+                          - img [ref=e822]
+                      - generic "More actions" [ref=e824]:
+                        - button [ref=e825] [cursor=pointer]:
+                          - img [ref=e826]
+                  - row "Select row 8/30/2024, 8:47 AM APP-83-2024-15 Chad Harris Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e828]:
+                    - cell "Select row" [ref=e829]:
+                      - generic [ref=e830] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e831]
+                        - img [ref=e832]
+                    - cell "8/30/2024, 8:47 AM" [ref=e834]
+                    - cell "APP-83-2024-15" [ref=e835]:
+                      - paragraph [ref=e837]: APP-83-2024-15
+                    - cell "Chad Harris" [ref=e838]:
+                      - generic "Chad Harris" [ref=e839]
+                    - cell "Copy to clipboard" [ref=e840]:
+                      - paragraph [ref=e841] [cursor=pointer]: charris@bingham.academy
+                    - cell "Not selected" [ref=e842]:
+                      - paragraph [ref=e844]: Not selected
+                    - cell "CONTACTED" [ref=e845]:
+                      - generic [ref=e847]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e848]:
+                      - generic "Go to application" [ref=e849]:
+                        - button [ref=e850] [cursor=pointer]:
+                          - img [ref=e851]
+                      - generic "Status history" [ref=e853]:
+                        - button [ref=e854] [cursor=pointer]:
+                          - img [ref=e855]
+                      - generic "More actions" [ref=e857]:
+                        - button [ref=e858] [cursor=pointer]:
+                          - img [ref=e859]
+                  - row "Select row 4/17/2024, 2:04 PM APP-83-2024-14 Sarah Maya Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e861]:
+                    - cell "Select row" [ref=e862]:
+                      - generic [ref=e863] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e864]
+                        - img [ref=e865]
+                    - cell "4/17/2024, 2:04 PM" [ref=e867]
+                    - cell "APP-83-2024-14" [ref=e868]:
+                      - paragraph [ref=e870]: APP-83-2024-14
+                    - cell "Sarah Maya" [ref=e871]:
+                      - generic "Sarah Maya" [ref=e872]
+                    - cell "Copy to clipboard" [ref=e873]:
+                      - paragraph [ref=e874] [cursor=pointer]: smaya@mynwa.us
+                    - cell "Not selected" [ref=e875]:
+                      - paragraph [ref=e877]: Not selected
+                    - cell "CONTACTED" [ref=e878]:
+                      - generic [ref=e880]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e881]:
+                      - generic "Go to application" [ref=e882]:
+                        - button [ref=e883] [cursor=pointer]:
+                          - img [ref=e884]
+                      - generic "Status history" [ref=e886]:
+                        - button [ref=e887] [cursor=pointer]:
+                          - img [ref=e888]
+                      - generic "More actions" [ref=e890]:
+                        - button [ref=e891] [cursor=pointer]:
+                          - img [ref=e892]
+                  - row "Select row 4/2/2024, 2:54 PM APP-83-2024-13 Michell M Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e894]:
+                    - cell "Select row" [ref=e895]:
+                      - generic [ref=e896] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e897]
+                        - img [ref=e898]
+                    - cell "4/2/2024, 2:54 PM" [ref=e900]
+                    - cell "APP-83-2024-13" [ref=e901]:
+                      - paragraph [ref=e903]: APP-83-2024-13
+                    - cell "Michell M" [ref=e904]:
+                      - generic "Michell M" [ref=e905]
+                    - cell "Copy to clipboard" [ref=e906]:
+                      - paragraph [ref=e907] [cursor=pointer]: mitchell.m2145@gmail.com
+                    - cell "Not selected" [ref=e908]:
+                      - paragraph [ref=e910]: Not selected
+                    - cell "CONTACTED" [ref=e911]:
+                      - generic [ref=e913]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e914]:
+                      - generic "Go to application" [ref=e915]:
+                        - button [ref=e916] [cursor=pointer]:
+                          - img [ref=e917]
+                      - generic "Status history" [ref=e919]:
+                        - button [ref=e920] [cursor=pointer]:
+                          - img [ref=e921]
+                      - generic "More actions" [ref=e923]:
+                        - button [ref=e924] [cursor=pointer]:
+                          - img [ref=e925]
+                  - row "Select row 3/25/2024, 9:29 AM APP-83-2024-11 Valerie Jones Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e927]:
+                    - cell "Select row" [ref=e928]:
+                      - generic [ref=e929] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e930]
+                        - img [ref=e931]
+                    - cell "3/25/2024, 9:29 AM" [ref=e933]
+                    - cell "APP-83-2024-11" [ref=e934]:
+                      - paragraph [ref=e936]: APP-83-2024-11
+                    - cell "Valerie Jones" [ref=e937]:
+                      - generic "Valerie Jones" [ref=e938]
+                    - cell "Copy to clipboard" [ref=e939]:
+                      - paragraph [ref=e940] [cursor=pointer]: valerie.jones@utahcph.org
+                    - cell "Not selected" [ref=e941]:
+                      - paragraph [ref=e943]: Not selected
+                    - cell "CONTACTED" [ref=e944]:
+                      - generic [ref=e946]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e947]:
+                      - generic "Go to application" [ref=e948]:
+                        - button [ref=e949] [cursor=pointer]:
+                          - img [ref=e950]
+                      - generic "Status history" [ref=e952]:
+                        - button [ref=e953] [cursor=pointer]:
+                          - img [ref=e954]
+                      - generic "More actions" [ref=e956]:
+                        - button [ref=e957] [cursor=pointer]:
+                          - img [ref=e958]
+                  - row "Select row 3/11/2024, 2:10 PM APP-83-2024-10 Daniel Crook Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e960]:
+                    - cell "Select row" [ref=e961]:
+                      - generic [ref=e962] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e963]
+                        - img [ref=e964]
+                    - cell "3/11/2024, 2:10 PM" [ref=e966]
+                    - cell "APP-83-2024-10" [ref=e967]:
+                      - paragraph [ref=e969]: APP-83-2024-10
+                    - cell "Daniel Crook" [ref=e970]:
+                      - generic "Daniel Crook" [ref=e971]
+                    - cell "Copy to clipboard" [ref=e972]:
+                      - paragraph [ref=e973] [cursor=pointer]: daniel@schoolharbor.com
+                    - cell "Not selected" [ref=e974]:
+                      - paragraph [ref=e976]: Not selected
+                    - cell "CONTACTED" [ref=e977]:
+                      - generic [ref=e979]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e980]:
+                      - generic "Go to application" [ref=e981]:
+                        - button [ref=e982] [cursor=pointer]:
+                          - img [ref=e983]
+                      - generic "Status history" [ref=e985]:
+                        - button [ref=e986] [cursor=pointer]:
+                          - img [ref=e987]
+                      - generic "More actions" [ref=e989]:
+                        - button [ref=e990] [cursor=pointer]:
+                          - img [ref=e991]
+                  - row "Select row 3/5/2024, 1:16 PM APP-83-2024-9 john cairns Copy to clipboard Not selected CONTACTED Go to application Status history More actions" [ref=e993]:
+                    - cell "Select row" [ref=e994]:
+                      - generic [ref=e995] [cursor=pointer]:
+                        - checkbox "Select row" [ref=e996]
+                        - img [ref=e997]
+                    - cell "3/5/2024, 1:16 PM" [ref=e999]
+                    - cell "APP-83-2024-9" [ref=e1000]:
+                      - paragraph [ref=e1002]: APP-83-2024-9
+                    - cell "john cairns" [ref=e1003]:
+                      - generic "john cairns" [ref=e1004]
+                    - cell "Copy to clipboard" [ref=e1005]:
+                      - paragraph [ref=e1006] [cursor=pointer]: Caijoh@gmail.com
+                    - cell "Not selected" [ref=e1007]:
+                      - paragraph [ref=e1009]: Not selected
+                    - cell "CONTACTED" [ref=e1010]:
+                      - generic [ref=e1012]: CONTACTED
+                    - cell "Go to application Status history More actions" [ref=e1013]:
+                      - generic "Go to application" [ref=e1014]:
+                        - button [ref=e1015] [cursor=pointer]:
+                          - img [ref=e1016]
+                      - generic "Status history" [ref=e1018]:
+                        - button [ref=e1019] [cursor=pointer]:
+                          - img [ref=e1020]
+                      - generic "More actions" [ref=e1022]:
+                        - button [ref=e1023] [cursor=pointer]:
+                          - img [ref=e1024]
+              - generic [ref=e1029]:
+                - paragraph [ref=e1030]: "Rows per page:"
+                - generic [ref=e1031]:
+                  - 'combobox "Rows per page: 25" [ref=e1032] [cursor=pointer]': "25"
+                  - textbox: "25"
+                  - img
+                - paragraph [ref=e1033]: 1–25 of 31
+                - generic [ref=e1034]:
+                  - button "Go to previous page" [disabled]:
+                    - img
+                  - button "Go to next page" [ref=e1035] [cursor=pointer]:
+                    - img [ref=e1036]

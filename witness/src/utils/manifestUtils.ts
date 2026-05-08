@@ -114,17 +114,40 @@ function extractYear(dateInfo: DateInfo): number | null {
 /**
  * Filter documents based on search criteria
  */
+function scoreDocument(doc: FlatDocument, tokens: string[]): number {
+  const filename = doc.filename.toLowerCase();
+  const summary = doc.summary.toLowerCase();
+  const tags = doc.tags.map((t) => t.toLowerCase());
+
+  let score = 0;
+  for (const token of tokens) {
+    if (filename.includes(token)) score += 3;
+    if (tags.some((t) => t.includes(token))) score += 2;
+    if (summary.includes(token)) score += 1;
+  }
+  return score;
+}
+
 export function filterDocuments(
   documents: FlatDocument[],
   criteria: SearchCriteria
 ): FlatDocument[] {
-  return documents.filter((doc) => {
-    // Text search in summary
-    if (criteria.query) {
-      const query = criteria.query.toLowerCase();
-      const matchesSummary = doc.summary.toLowerCase().includes(query);
-      const matchesFilename = doc.filename.toLowerCase().includes(query);
-      if (!matchesSummary && !matchesFilename) return false;
+  const tokens = criteria.query
+    ? criteria.query.toLowerCase().trim().split(/\s+/).filter(Boolean)
+    : [];
+
+  const filtered = documents.filter((doc) => {
+    if (tokens.length > 0) {
+      const filename = doc.filename.toLowerCase();
+      const summary = doc.summary.toLowerCase();
+      const tags = doc.tags.map((t) => t.toLowerCase());
+      const allTokensMatch = tokens.every(
+        (token) =>
+          filename.includes(token) ||
+          summary.includes(token) ||
+          tags.some((t) => t.includes(token))
+      );
+      if (!allTokensMatch) return false;
     }
 
     // Filter by tags (OR logic - match any tag)
@@ -162,6 +185,13 @@ export function filterDocuments(
 
     return true;
   });
+
+  if (tokens.length === 0) return filtered;
+
+  return filtered
+    .map((doc) => ({ doc, score: scoreDocument(doc, tokens) }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ doc }) => doc);
 }
 
 /**

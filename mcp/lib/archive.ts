@@ -152,26 +152,44 @@ export interface SearchOptions {
 
 export function searchDocuments(docs: ArchiveDocument[], options: SearchOptions): ArchiveDocument[] {
   const { query, tag, type, year, limit = 20 } = options;
-  const q = query?.toLowerCase().trim();
-  const results: ArchiveDocument[] = [];
+  const tokens = query ? query.toLowerCase().trim().split(/\s+/).filter(Boolean) : [];
+
+  const scored: { doc: ArchiveDocument; score: number }[] = [];
 
   for (const doc of docs) {
-    if (q) {
-      const hit =
-        doc.summary.toLowerCase().includes(q) ||
-        doc.fileName.toLowerCase().includes(q) ||
-        doc.tags.some((t) => t.toLowerCase().includes(q));
-      if (!hit) continue;
-    }
     if (tag && !doc.tags.some((t) => t.toLowerCase() === tag.toLowerCase())) continue;
     if (type && doc.type.toLowerCase() !== type.toLowerCase()) continue;
     if (year && doc.year !== year) continue;
 
-    results.push(doc);
-    if (results.length >= limit) break;
+    if (tokens.length > 0) {
+      const fileName = doc.fileName.toLowerCase();
+      const summary = doc.summary.toLowerCase();
+      const tags = doc.tags.map((t) => t.toLowerCase());
+
+      const allMatch = tokens.every(
+        (token) =>
+          fileName.includes(token) ||
+          summary.includes(token) ||
+          tags.some((t) => t.includes(token))
+      );
+      if (!allMatch) continue;
+
+      let score = 0;
+      for (const token of tokens) {
+        if (fileName.includes(token)) score += 3;
+        if (tags.some((t) => t.includes(token))) score += 2;
+        if (summary.includes(token)) score += 1;
+      }
+      scored.push({ doc, score });
+    } else {
+      scored.push({ doc, score: 0 });
+    }
   }
 
-  return results;
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(({ doc }) => doc);
 }
 
 // ── Formatting ────────────────────────────────────────────────────────────────

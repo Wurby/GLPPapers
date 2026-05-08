@@ -1,0 +1,278 @@
+- generic [ref=e3]:
+  - region "top of page"
+  - generic [ref=e9]:
+    - banner [ref=e10]:
+      - generic [ref=e16]:
+        - generic:
+          - generic:
+            - img "Packed Class Inverted Color.png" [ref=e21]
+            - generic "Packed Class Main Logo 2400x1800.jpg" [ref=e22] [cursor=pointer]:
+              - link [ref=e23]:
+                - /url: https://www.packedclass.com
+            - navigation "Site" [ref=e25]:
+              - list [ref=e26]:
+                - listitem [ref=e27] [cursor=pointer]:
+                  - link "About" [ref=e28]:
+                    - /url: https://www.packedclass.com
+                    - paragraph [ref=e31]: About
+                - listitem [ref=e32] [cursor=pointer]:
+                  - link "How it works" [ref=e33]:
+                    - /url: https://www.packedclass.com
+                    - paragraph [ref=e36]: How it works
+                - listitem [ref=e37] [cursor=pointer]:
+                  - link "Testimonials" [ref=e38]:
+                    - /url: https://www.packedclass.com
+                    - paragraph [ref=e41]: Testimonials
+                - listitem [ref=e42] [cursor=pointer]:
+                  - link "Request demo" [ref=e43]:
+                    - /url: https://m8b4if6xl2p.typeform.com/to/Iz2uj2kA
+                    - paragraph [ref=e46]: Request demo
+            - link "Log in" [ref=e48] [cursor=pointer]:
+              - /url: https://app.packedclass.com/login
+              - generic [ref=e49]: Log in
+    - main [ref=e50]:
+      - generic [ref=e55]:
+        - navigation "Page" [ref=e56]:
+          - list [ref=e57]:
+            - listitem [ref=e58]:
+              - link "Top of Page" [ref=e59]:
+                - /url: https://www.packedclass.com
+                - img [ref=e60] [cursor=pointer]
+            - listitem [ref=e62]:
+              - link "Who are we" [ref=e63]:
+                - /url: https://www.packedclass.com
+                - img [ref=e64] [cursor=pointer]
+            - listitem [ref=e66]:
+              - link "How it works" [ref=e67]:
+                - /url: https://www.packedclass.com
+                - img [ref=e68] [cursor=pointer]
+            - listitem [ref=e70]:
+              - link "Testimonials" [ref=e71]:
+                - /url: https://www.packedclass.com
+                - img [ref=e72] [cursor=pointer]
+            - listitem [ref=e74]:
+              - link "Request demo" [ref=e75]:
+                - /url: https://www.packedclass.com
+                - img [ref=e76] [cursor=pointer]
+            - listitem [ref=e78]:
+              - link "Untitled" [ref=e79]:
+                - /url: https://www.packedclass.com
+                - img [ref=e80] [cursor=pointer]
+        - generic:
+          - generic:
+            - generic:
+              - generic [ref=e91]:
+                - generic:
+                  - generic:
+                    - img [ref=e97]
+                    - img [ref=e102]
+                    - img [ref=e110]
+                    - img [ref=e115]
+                    - heading "Charter School Enrollment Automated" [level=1] [ref=e121]:
+                      - generic [ref=e122]: Charter School Enrollment Automated
+                    - heading "Built by Charter School Leaders" [level=6] [ref=e123]:
+                      - generic [ref=e124]: Built by Charter School Leaders
+                    - link "Request demo" [ref=e126] [cursor=pointer]:
+                      - /url: https://m8b4if6xl2p.typeform.com/to/Iz2uj2kA
+                      - generic [ref=e127]: Request demo
+                    - img [ref=e130]
+              - generic [ref=e142]:
+                - generic:
+                  - generic:
+                    - generic [ref=e150]:
+                      - generic [ref=e151]:
+                        - generic:
+                          - generic:
+                            - img [ref=e157]
+                            - heading "Built by Charter Schools" [level=5] [ref=e171]:
+                              - generic [ref=e172]: Built by Charter Schools
+                            - paragraph [ref=e173]: Packed Class was built by charter school leaders who know the wants and needs of enrollment teams. Easy customization to fit your specific needs.
+                      - generic [ref=e174]:
+                        - generic:
+                          - generic:
+                            - img [ref=e180]
+                            - heading "Analytics & Ads Tracking" [level=5] [ref=e183]:
+                              - generic [ref=e184]: Analytics & Ads Tracking
+                            - paragraph [ref=e185]:
+                              - generic [ref=e186]: Tired of not knowing how families found your school? Packed Class is the only enrollment software on the market that can track the performance of your advertising from start to finish.
+                      - generic [ref=e187]:
+                        - generic:
+                          - generic:
+                            - img [ref=e193]
+                            - heading "Improved Conversion Rates" [level=5] [ref=e196]:
+                              - generic [ref=e197]: Improved Conversion Rates
+                            - paragraph [ref=e198]: We have pulled from literally millions of data points to improve the rate at which website traffic converts into students and funding for your growing charter school.
+                    - region "Who are we"
+              - generic [ref=e199]:
+                - generic:
+                  - generic:
+                    - generic [ref=e208]:
+                      - generic:
+                        - generic:
+                          - heading "How it works" [level=4] [ref=e212]:
+                            - generic [ref=e213]: How it works
+                          - img [ref=e216]
+                          - img [ref=e221]
+                          - img [ref=e226]
+                          - img [ref=e231]
+                          - img [ref=e250]
+                          - heading "Easy Lead Capture" [level=4] [ref=e256]
+                          - paragraph [ref=e257]: Unlike other enrollment platforms, applicants don't need to create an account or fill out endless paperwork to enter into your lead funnel.
+                          - img [ref=e260]
+                          - img [ref=e265]
+                          - img [ref=e270]
+                          - heading "Automated Follow-up" [level=4] [ref=e276]
+                          - paragraph [ref=e277]: Make life easy for your registrar by automating email and text message prompts to keep applicants moving through your enrollment process all the way until completed.
+                          - img [ref=e280]
+                    - region "How it works"
+              - generic [ref=e283]:
+                - generic:
+                  - generic:
+                    - region "Slideshow" [ref=e287]:
+                      - generic [ref=e289]:
+                        - generic:
+                          - generic:
+                            - img [ref=e295]
+                            - heading "Packed Class User" [level=6] [ref=e298]:
+                              - generic [ref=e299]: Packed Class User
+                            - img [ref=e302]
+                            - img [ref=e307]
+                            - img [ref=e313]
+                            - heading "\"The smartest enrollment product in the market.\"" [level=3] [ref=e316]:
+                              - generic [ref=e318]:
+                                - text: "\"The smartest enrollment product"
+                                - text: in the market."
+                            - img [ref=e321]
+                            - img [ref=e326]
+                            - img [ref=e331]
+                            - img [ref=e336]
+                      - navigation "Slides" [ref=e339]:
+                        - list:
+                          - listitem:
+                            - link "Slide 01" [ref=e340] [cursor=pointer]:
+                              - /url: ./#comp-irqduxhy
+                          - listitem:
+                            - link "Slide 02" [ref=e341] [cursor=pointer]:
+                              - /url: ./#comp-iseo1p9u
+                    - region "Testimonials"
+              - generic [ref=e350]:
+                - generic [ref=e351]:
+                  - generic:
+                    - generic:
+                      - generic [ref=e355]:
+                        - generic:
+                          - generic:
+                            - heading "Pro" [level=3] [ref=e357]:
+                              - generic [ref=e358]: Pro
+                            - generic "Packed Class Logo Symbol 2400x1800_edite" [ref=e361]:
+                              - img "Packed Class Logo Symbol.png" [ref=e363]
+                      - generic:
+                        - paragraph [ref=e364]: Basic plus...
+                        - paragraph [ref=e365]: "- Ads tracking"
+                        - paragraph [ref=e366]: "- Analytics dashboards"
+                        - paragraph [ref=e367]: "- Individualized customer support"
+                      - heading "$250/mo" [level=3] [ref=e368]:
+                        - generic [ref=e370]: $250/mo
+                - generic [ref=e371]:
+                  - generic:
+                    - generic:
+                      - generic [ref=e375]:
+                        - generic:
+                          - generic:
+                            - heading "Basic" [level=3] [ref=e377]:
+                              - generic [ref=e379]: Basic
+                            - generic "Packed Class Logo Symbol 2400x1800_edite" [ref=e382]:
+                              - img "Packed Class Logo Symbol.png" [ref=e384]
+                      - generic:
+                        - paragraph [ref=e385]: "- Increased enrollment rate"
+                        - paragraph [ref=e386]: "- Automated email & SMS follow-up"
+                        - paragraph [ref=e387]: "- Multi-campus & school year lead tracking"
+                        - paragraph [ref=e388]: "- Enrollment lottery"
+                        - paragraph [ref=e389]: "- Waitlist retention"
+                      - heading "$100/mo" [level=3] [ref=e390]:
+                        - generic [ref=e392]: $100/mo
+              - generic [ref=e401]:
+                - generic "2b9ebd_61a4b6eaaee646a1b5e84495882392e8~mv2.png" [ref=e406]:
+                  - img "image.png" [ref=e408]
+                - generic "2b9ebd_a51da41b0e6d41b1a5a3b4cf8d1c78cf~mv2.png" [ref=e413]:
+                  - img "aai-logo.png" [ref=e415]
+                - generic "2b9ebd_3cf147d97932477fa5ee57c12bed285a~mv2.png" [ref=e420]:
+                  - img "image.png" [ref=e422]
+                - generic "2b9ebd_b6e4038f32294919aad3c418ca85c30a~mv2.png" [ref=e427]:
+                  - img "image.png" [ref=e429]
+                - generic "2b9ebd_736a84e01a3d40bd9646386fbb50c1b1~mv2.png" [ref=e434]:
+                  - img "image.png" [ref=e436]
+              - generic [ref=e437]:
+                - generic:
+                  - generic:
+                    - region "Request demo"
+                    - generic [ref=e446]:
+                      - generic:
+                        - generic:
+                          - img [ref=e452]
+                          - heading "Request demo" [level=5] [ref=e455]
+                          - heading "To schedule a product demo with one of our product consultants, please fill in your contact details" [level=4] [ref=e456]:
+                            - generic [ref=e457]: To schedule a product demo with one of our product consultants, please fill in your contact details
+                          - img [ref=e460]
+                          - form "My Form" [ref=e469]:
+                            - group [ref=e470]:
+                              - generic [ref=e471]:
+                                - generic [ref=e472]:
+                                  - generic [ref=e474]:
+                                    - generic [ref=e476]: First name
+                                    - textbox "First name" [ref=e481]
+                                  - generic [ref=e483]:
+                                    - generic [ref=e485]: Last name
+                                    - textbox "Last name" [ref=e490]
+                                  - generic [ref=e492]:
+                                    - generic [ref=e494]:
+                                      - text: Email
+                                      - generic [ref=e495]: "*"
+                                    - textbox "Email" [ref=e500]
+                                  - generic [ref=e502]:
+                                    - generic [ref=e504]:
+                                      - text: Phone
+                                      - generic [ref=e505]: "*"
+                                    - generic [ref=e510]:
+                                      - button "Phone. Phone. Select a country code" [ref=e514] [cursor=pointer]:
+                                        - generic [ref=e517]:
+                                          - img [ref=e519]
+                                          - img [ref=e522]
+                                      - textbox "Phone. Phone" [ref=e524]
+                                  - button "Submit" [ref=e529] [cursor=pointer]:
+                                    - generic [ref=e530]: Submit
+                                - region
+                          - paragraph [ref=e531]:
+                            - link "marketing@charterconnect.co" [ref=e535] [cursor=pointer]:
+                              - /url: mailto:info@mysite.com
+                          - paragraph [ref=e537]:
+                            - link "520-471-6882" [ref=e538] [cursor=pointer]:
+                              - /url: tel:+1-678-713-1971
+                              - generic [ref=e541]: 520-471-6882
+        - link [ref=e545] [cursor=pointer]:
+          - /url: https://www.packedclass.com
+          - img [ref=e547]
+    - contentinfo [ref=e550]:
+      - generic [ref=e556]:
+        - generic:
+          - generic:
+            - list "Social Bar" [ref=e558]:
+              - listitem [ref=e559]:
+                - link "Facebook" [ref=e560] [cursor=pointer]:
+                  - /url: https://www.facebook.com/charterconnect.co
+                  - img "Facebook" [ref=e561]
+              - listitem [ref=e562]:
+                - link "Twitter" [ref=e563] [cursor=pointer]:
+                  - /url: https://x.com/charter_connect
+                  - img "Twitter" [ref=e564]
+              - listitem [ref=e565]:
+                - link "Instagram" [ref=e566] [cursor=pointer]:
+                  - /url: https://www.instagram.com/charterconnect/
+                  - img "Instagram" [ref=e567]
+              - listitem [ref=e568]:
+                - link "LinkedIn" [ref=e569] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/company/charter-connect/
+                  - img "LinkedIn" [ref=e570]
+            - paragraph [ref=e571]:
+              - generic [ref=e572]: © 2026 Packed Class LLC.
+  - region "bottom of page"
