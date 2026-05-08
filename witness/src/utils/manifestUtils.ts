@@ -111,6 +111,19 @@ function extractYear(dateInfo: DateInfo): number | null {
 // FILTERING & SEARCHING
 // ============================================================================
 
+const STOP_WORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+  'of', 'with', 'by', 'from', 'is', 'was', 'are', 'were', 'be', 'been',
+  'as', 'it', 'its', 'that', 'this', 'which', 'who', 'what', 'how',
+  'when', 'where', 'why',
+]);
+
+function tokenize(query: string): string[] {
+  const raw = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const filtered = raw.filter((t) => !STOP_WORDS.has(t));
+  return filtered.length > 0 ? filtered : raw;
+}
+
 /**
  * Filter documents based on search criteria
  */
@@ -118,12 +131,16 @@ function scoreDocument(doc: FlatDocument, tokens: string[]): number {
   const filename = doc.filename.toLowerCase();
   const summary = doc.summary.toLowerCase();
   const tags = doc.tags.map((t) => t.toLowerCase());
+  const folderPath = doc.folderPath.toLowerCase();
+  const content = doc.content?.toLowerCase() ?? '';
 
   let score = 0;
   for (const token of tokens) {
     if (filename.includes(token)) score += 3;
     if (tags.some((t) => t.includes(token))) score += 2;
+    if (folderPath.includes(token)) score += 2;
     if (summary.includes(token)) score += 1;
+    if (content.includes(token)) score += 1;
   }
   return score;
 }
@@ -132,30 +149,33 @@ export function filterDocuments(
   documents: FlatDocument[],
   criteria: SearchCriteria
 ): FlatDocument[] {
-  const tokens = criteria.query
-    ? criteria.query.toLowerCase().trim().split(/\s+/).filter(Boolean)
-    : [];
+  const tokens = criteria.query ? tokenize(criteria.query) : [];
 
   const filtered = documents.filter((doc) => {
     if (tokens.length > 0) {
       const filename = doc.filename.toLowerCase();
       const summary = doc.summary.toLowerCase();
       const tags = doc.tags.map((t) => t.toLowerCase());
+      const folderPath = doc.folderPath.toLowerCase();
+      const content = doc.content?.toLowerCase() ?? '';
       const allTokensMatch = tokens.every(
         (token) =>
           filename.includes(token) ||
           summary.includes(token) ||
-          tags.some((t) => t.includes(token))
+          tags.some((t) => t.includes(token)) ||
+          folderPath.includes(token) ||
+          content.includes(token)
       );
       if (!allTokensMatch) return false;
     }
 
-    // Filter by tags (OR logic - match any tag)
+    // Filter by tags (AND logic - all selected tags must match)
     if (criteria.tags && criteria.tags.length > 0) {
-      const hasMatchingTag = criteria.tags.some((tag) =>
-        doc.tags.includes(tag)
+      const docTagsLower = doc.tags.map((t) => t.toLowerCase());
+      const allTagsMatch = criteria.tags.every((tag) =>
+        docTagsLower.some((t) => t === tag.toLowerCase())
       );
-      if (!hasMatchingTag) return false;
+      if (!allTagsMatch) return false;
     }
 
     // Filter by document types (OR logic - match any type)

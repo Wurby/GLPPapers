@@ -31,6 +31,7 @@ interface FirestoreDocumentData {
   summary: string;
   /** Path within Firebase Storage, e.g. "box-3/folder/file.txt" */
   storageRef: string;
+  content?: string;
 }
 
 function toFlatDocument(data: FirestoreDocumentData): FlatDocument {
@@ -61,6 +62,7 @@ function toFlatDocument(data: FirestoreDocumentData): FlatDocument {
     type: data.type,
     typeConfidence: data.typeConfidence,
     summary: data.summary,
+    ...(data.content !== undefined && { content: data.content }),
     textFilePath: data.storageRef,
     analysisFilePath: data.storageRef.replace('.txt', '_analysis.json'),
   };

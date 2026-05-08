@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useArchiveData as useArchive } from '../hooks/useArchiveData';
 import { Card, Heading, Text, Input } from '../components/ui';
-import { getTagColor, formatDate } from '../utils/manifestUtils';
+import { getTagColor, formatDate, filterDocuments } from '../utils/manifestUtils';
 import { DocumentPreview } from '../components/DocumentPreview';
 import type { FlatDocument } from '../types/archive';
 
@@ -37,44 +37,15 @@ function Browse() {
     setSearchParams(params, { replace: true });
   }, [searchQuery, selectedTags, selectedTypes, setSearchParams]);
 
-  // Search criteria is built inline in the filter logic below
-
-  // Filter documents based on criteria
   const filteredDocuments = useMemo((): FlatDocument[] => {
-    if (
-      !searchQuery &&
-      selectedTags.length === 0 &&
-      selectedTypes.length === 0
-    ) {
+    if (!searchQuery && selectedTags.length === 0 && selectedTypes.length === 0) {
       return [];
     }
-
-    return documents.filter((doc) => {
-      // Text search
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        const matchesSummary = doc.summary.toLowerCase().includes(query);
-        const matchesFilename = doc.filename.toLowerCase().includes(query);
-        const matchesPath = doc.path.toLowerCase().includes(query);
-        if (!matchesSummary && !matchesFilename && !matchesPath) return false;
-      }
-
-      // Tag filter - ALL selected tags must match (AND logic)
-      if (selectedTags.length > 0) {
-        const docTagsLower = doc.tags.map((t) => t.toLowerCase());
-        const allTagsMatch = selectedTags.every((selectedTag) =>
-          docTagsLower.some((docTag) => docTag === selectedTag.toLowerCase())
-        );
-        if (!allTagsMatch) return false;
-      }
-
-      // Type filter - ANY selected type can match (OR logic)
-      if (selectedTypes.length > 0) {
-        if (!selectedTypes.includes(doc.type)) return false;
-      }
-
-      return true;
-    });
+    const criteria: import('../types/archive').SearchCriteria = {};
+    if (searchQuery) criteria.query = searchQuery;
+    if (selectedTags.length > 0) criteria.tags = selectedTags;
+    if (selectedTypes.length > 0) criteria.types = selectedTypes;
+    return filterDocuments(documents, criteria);
   }, [documents, searchQuery, selectedTags, selectedTypes]);
 
   // Check if any filters are active
@@ -266,7 +237,7 @@ function Browse() {
         {/* Search input */}
         <Input
           type="search"
-          placeholder="Search by filename, content summary, or path..."
+          placeholder="Search by filename, summary, tags, or folder name..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           icon={

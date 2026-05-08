@@ -20,6 +20,7 @@ export interface ArchiveDocument {
   type: string;
   typeConfidence: 'high' | 'medium' | 'low';
   summary: string;
+  content?: string;
   storageRef: string; // path in Firebase Storage, e.g. "box-3/folder/file.txt"
 }
 
@@ -99,6 +100,7 @@ function parseDoc(d: FsDoc): ArchiveDocument {
     type: str(f, 'type'),
     typeConfidence: (str(f, 'typeConfidence') || 'low') as ArchiveDocument['typeConfidence'],
     summary: str(f, 'summary'),
+    content: strOrNull(f, 'content') ?? undefined,
     storageRef: str(f, 'storageRef'),
   };
 }
@@ -142,6 +144,19 @@ export function getDocumentUrl(storageRef: string): string {
 
 // ── Search ────────────────────────────────────────────────────────────────────
 
+const STOP_WORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+  'of', 'with', 'by', 'from', 'is', 'was', 'are', 'were', 'be', 'been',
+  'as', 'it', 'its', 'that', 'this', 'which', 'who', 'what', 'how',
+  'when', 'where', 'why',
+]);
+
+function tokenize(query: string): string[] {
+  const raw = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const filtered = raw.filter((t) => !STOP_WORDS.has(t));
+  return filtered.length > 0 ? filtered : raw;
+}
+
 export interface SearchOptions {
   query?: string;
   tag?: string;
@@ -152,7 +167,7 @@ export interface SearchOptions {
 
 export function searchDocuments(docs: ArchiveDocument[], options: SearchOptions): ArchiveDocument[] {
   const { query, tag, type, year, limit = 20 } = options;
-  const tokens = query ? query.toLowerCase().trim().split(/\s+/).filter(Boolean) : [];
+  const tokens = query ? tokenize(query) : [];
 
   const scored: { doc: ArchiveDocument; score: number }[] = [];
 
@@ -165,12 +180,16 @@ export function searchDocuments(docs: ArchiveDocument[], options: SearchOptions)
       const fileName = doc.fileName.toLowerCase();
       const summary = doc.summary.toLowerCase();
       const tags = doc.tags.map((t) => t.toLowerCase());
+      const folderPath = doc.folderPath.toLowerCase();
+      const content = doc.content?.toLowerCase() ?? '';
 
       const allMatch = tokens.every(
         (token) =>
           fileName.includes(token) ||
           summary.includes(token) ||
-          tags.some((t) => t.includes(token))
+          tags.some((t) => t.includes(token)) ||
+          folderPath.includes(token) ||
+          content.includes(token)
       );
       if (!allMatch) continue;
 
@@ -178,7 +197,9 @@ export function searchDocuments(docs: ArchiveDocument[], options: SearchOptions)
       for (const token of tokens) {
         if (fileName.includes(token)) score += 3;
         if (tags.some((t) => t.includes(token))) score += 2;
+        if (folderPath.includes(token)) score += 2;
         if (summary.includes(token)) score += 1;
+        if (content.includes(token)) score += 1;
       }
       scored.push({ doc, score });
     } else {

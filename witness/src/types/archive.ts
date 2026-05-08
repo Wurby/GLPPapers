@@ -103,6 +103,7 @@ export interface FlatDocument {
 
   // Content
   summary: string;
+  content?: string;          // Full document text (populated from Firestore)
 
   // File paths
   textFilePath: string;      // Path to .txt file
